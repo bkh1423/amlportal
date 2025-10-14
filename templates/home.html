@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AML Risk & Compliance Assessment</title>
+    <style>
+        body {
+            background-color: #1E2633;
+            color: #E0E6ED;
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #0F172A;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(229, 181, 91, 0.1);
+        }
+
+        h1 {
+            color: #E5B55B;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        p {
+            line-height: 1.8;
+            text-align: center;
+            color: #E0E6ED;
+        }
+
+        .btn-start {
+            display: block;
+            margin: 30px auto;
+            background-color: #E5B55B;
+            color: #0F172A;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 25px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-start:hover {
+            background-color: #f0ca7a;
+        }
+    </style>
+</head>
+<body>
+
+    {% include 'header.html' %}
+
+    <div class="container">
+        <h1>AML Risk & Compliance Assessment</h1>
+        <p>
+            Welcome to the AML Risk Assessment Tool.<br>
+            This system helps you evaluate your compliance and AML risk levels efficiently and accurately.<br>
+            You’ll go through three main sections: <br><br>
+            <strong>1. Business Profile</strong> – Define your business type and structure.<br>
+            <strong>2. Compliance Stack</strong> – Describe your current AML tools and systems.<br>
+            <strong>3. Risk Questions</strong> – Answer targeted questions to assess your risk exposure.<br><br>
+            After completion, your overall risk level and recommendations will appear automatically.
+        </p>
+        <button class="btn-start" onclick="window.location.href='#'">Start Assessment</button>
+    </div>
+
+    {% include 'footer.html' %}
+</body>
+</html>
+
