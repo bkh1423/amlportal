@@ -3,80 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AML Risk & Compliance Assessment</title>
+    <title>AML Risk & Compliance Portal</title>
     <style>
         body {
-            background-color: #1E2633;
+            background-color: #0F172A;
             color: #E0E6ED;
             font-family: 'Cairo', sans-serif;
             margin: 0;
             padding: 0;
         }
 
-        header {
-            background-color: #0F172A;
-            padding: 15px 0;
-            box-shadow: 0 0 10px rgba(229, 181, 91, 0.2);
+        a {
+            text-decoration: none;
+            color: inherit;
         }
 
-        nav {
+        header {
+            background-color: #1E2633;
             display: flex;
-            justify-content: center;
-            gap: 40px;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 60px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #E5B55B;
         }
 
         nav a {
+            margin-left: 30px;
+            font-weight: 600;
             color: #E0E6ED;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1rem;
             padding: 8px 15px;
-            border-radius: 8px;
-            transition: 0.3s;
+            border-radius: 6px;
+            transition: all 0.3s ease;
         }
 
         nav a:hover {
-            border: 2px solid #E5B55B;
+            border: 1px solid #E5B55B;
             color: #E5B55B;
             box-shadow: 0 0 10px rgba(229, 181, 91, 0.4);
         }
 
-        .hero {
-            max-width: 800px;
-            margin: 60px auto;
+        .main-container {
             text-align: center;
-            background-color: #0F172A;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(229, 181, 91, 0.15);
+            margin: 100px auto;
+            max-width: 1000px;
         }
 
-        .hero h1 {
-            color: #E5B55B;
+        .main-title {
             font-size: 2rem;
-            margin-bottom: 20px;
-        }
-
-        .hero p {
-            color: #E0E6ED;
-            line-height: 1.7;
+            font-weight: bold;
+            color: #E5B55B;
+            background-color: #1E2633;
+            display: inline-block;
+            padding: 20px 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(229, 181, 91, 0.2);
         }
 
         .sections {
             display: flex;
             justify-content: center;
+            gap: 30px;
+            margin-top: 60px;
             flex-wrap: wrap;
-            gap: 25px;
-            margin: 40px auto;
-            max-width: 1100px;
         }
 
         .card {
-            background-color: #0F172A;
-            border-radius: 12px;
-            width: 300px;
+            background-color: #1E2633;
+            width: 280px;
             padding: 25px;
-            text-align: center;
+            border-radius: 12px;
             box-shadow: 0 0 15px rgba(229, 181, 91, 0.1);
             transition: transform 0.3s, box-shadow 0.3s;
         }
@@ -93,23 +94,22 @@
 
         .card p {
             color: #E0E6ED;
+            line-height: 1.6;
             font-size: 0.95rem;
         }
 
-        /* 🔹 الشريط السفلي */
         footer {
-            background-color: #0F172A;
+            background-color: #1E2633;
             color: #E0E6ED;
             text-align: center;
             padding: 15px 0;
-            margin-top: 60px;
+            margin-top: 100px;
             font-size: 0.9rem;
-            box-shadow: 0 -2px 8px rgba(229, 181, 91, 0.1);
+            border-top: 1px solid rgba(229, 181, 91, 0.2);
         }
 
         footer a {
             color: #E5B55B;
-            text-decoration: none;
             margin: 0 10px;
             transition: 0.3s;
         }
@@ -117,12 +117,12 @@
         footer a:hover {
             text-decoration: underline;
         }
-
     </style>
 </head>
 <body>
 
     <header>
+        <div class="logo">AML Portal</div>
         <nav>
             <a href="#">Home</a>
             <a href="#">Login</a>
@@ -130,36 +130,31 @@
         </nav>
     </header>
 
-    <section class="hero">
-        <h1>AML Risk & Compliance Assessment</h1>
-        <p>
-            Evaluate your organization’s AML risk and compliance readiness.<br>
-            Proceed through the main sections below to get your risk profile and smart recommendations.
-        </p>
-    </section>
+    <div class="main-container">
+        <div class="main-title">AML Risk & Compliance Assessment</div>
 
-    <div class="sections">
-        <div class="card">
-            <h3>Business Profile</h3>
-            <p>Define your business type and structure to set the foundation of your risk profile.</p>
-        </div>
-        <div class="card">
-            <h3>Compliance Stack</h3>
-            <p>Describe your current AML tools, systems, and compliance controls in use.</p>
-        </div>
-        <div class="card">
-            <h3>Risk Questions</h3>
-            <p>Answer targeted questions to help identify your company’s exposure and potential gaps.</p>
+        <div class="sections">
+            <div class="card">
+                <h3>Business Profile</h3>
+                <p>Define your company type, structure, and customer base to start your AML assessment.</p>
+            </div>
+
+            <div class="card">
+                <h3>Compliance Stack</h3>
+                <p>Describe your current AML systems, vendors, and monitoring tools in use.</p>
+            </div>
+
+            <div class="card">
+                <h3>Risk Questions</h3>
+                <p>Answer key questions to assess your organization’s compliance and exposure levels.</p>
+            </div>
         </div>
     </div>
 
     <footer>
         <p>
-            <a href="#">About</a> |
-            <a href="#">Contact</a> |
-            <a href="#">Privacy Policy</a>
+            © 2025 AML Portal | <a href="#">About</a> | <a href="#">Contact</a> | <a href="#">Privacy Policy</a>
         </p>
-        <p>© 2025 AML Risk Tool. All rights reserved.</p>
     </footer>
 
 </body>
