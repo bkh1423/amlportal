@@ -13,65 +13,154 @@
             padding: 0;
         }
 
-        .container {
-            max-width: 1000px;
-            margin: 50px auto;
-            padding: 20px;
+        header {
             background-color: #0F172A;
-            border-radius: 15px;
-            box-shadow: 0 0 15px rgba(229, 181, 91, 0.1);
+            padding: 15px 0;
+            box-shadow: 0 0 10px rgba(229, 181, 91, 0.2);
         }
 
-        h1 {
-            color: #E5B55B;
-            text-align: center;
-            margin-bottom: 30px;
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
         }
 
-        p {
-            line-height: 1.8;
-            text-align: center;
+        nav a {
             color: #E0E6ED;
-        }
-
-        .btn-start {
-            display: block;
-            margin: 30px auto;
-            background-color: #E5B55B;
-            color: #0F172A;
-            border: none;
-            border-radius: 8px;
-            padding: 12px 25px;
+            text-decoration: none;
             font-weight: bold;
-            font-size: 1rem;
-            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 8px 15px;
+            border-radius: 8px;
             transition: 0.3s;
         }
 
-        .btn-start:hover {
-            background-color: #f0ca7a;
+        nav a:hover {
+            border: 2px solid #E5B55B;
+            color: #E5B55B;
+            box-shadow: 0 0 10px rgba(229, 181, 91, 0.4);
         }
+
+        .hero {
+            max-width: 800px;
+            margin: 60px auto;
+            text-align: center;
+            background-color: #0F172A;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(229, 181, 91, 0.15);
+        }
+
+        .hero h1 {
+            color: #E5B55B;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            color: #E0E6ED;
+            line-height: 1.7;
+        }
+
+        .sections {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin: 40px auto;
+            max-width: 1100px;
+        }
+
+        .card {
+            background-color: #0F172A;
+            border-radius: 12px;
+            width: 300px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(229, 181, 91, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(229, 181, 91, 0.3);
+        }
+
+        .card h3 {
+            color: #E5B55B;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            color: #E0E6ED;
+            font-size: 0.95rem;
+        }
+
+        /* 🔹 الشريط السفلي */
+        footer {
+            background-color: #0F172A;
+            color: #E0E6ED;
+            text-align: center;
+            padding: 15px 0;
+            margin-top: 60px;
+            font-size: 0.9rem;
+            box-shadow: 0 -2px 8px rgba(229, 181, 91, 0.1);
+        }
+
+        footer a {
+            color: #E5B55B;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: 0.3s;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
     </style>
 </head>
 <body>
 
-    {% include 'header.html' %}
+    <header>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">Login</a>
+            <a href="#">Register</a>
+        </nav>
+    </header>
 
-    <div class="container">
+    <section class="hero">
         <h1>AML Risk & Compliance Assessment</h1>
         <p>
-            Welcome to the AML Risk Assessment Tool.<br>
-            This system helps you evaluate your compliance and AML risk levels efficiently and accurately.<br>
-            You’ll go through three main sections: <br><br>
-            <strong>1. Business Profile</strong> – Define your business type and structure.<br>
-            <strong>2. Compliance Stack</strong> – Describe your current AML tools and systems.<br>
-            <strong>3. Risk Questions</strong> – Answer targeted questions to assess your risk exposure.<br><br>
-            After completion, your overall risk level and recommendations will appear automatically.
+            Evaluate your organization’s AML risk and compliance readiness.<br>
+            Proceed through the main sections below to get your risk profile and smart recommendations.
         </p>
-        <button class="btn-start" onclick="window.location.href='#'">Start Assessment</button>
+    </section>
+
+    <div class="sections">
+        <div class="card">
+            <h3>Business Profile</h3>
+            <p>Define your business type and structure to set the foundation of your risk profile.</p>
+        </div>
+        <div class="card">
+            <h3>Compliance Stack</h3>
+            <p>Describe your current AML tools, systems, and compliance controls in use.</p>
+        </div>
+        <div class="card">
+            <h3>Risk Questions</h3>
+            <p>Answer targeted questions to help identify your company’s exposure and potential gaps.</p>
+        </div>
     </div>
 
-    {% include 'footer.html' %}
+    <footer>
+        <p>
+            <a href="#">About</a> |
+            <a href="#">Contact</a> |
+            <a href="#">Privacy Policy</a>
+        </p>
+        <p>© 2025 AML Risk Tool. All rights reserved.</p>
+    </footer>
+
 </body>
 </html>
-
