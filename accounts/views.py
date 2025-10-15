@@ -44,4 +44,3 @@ def profile_view(request):
         return redirect('login')
     profile = UserProfile.objects.get(user=request.user)
     return render(request, 'accounts/profile.html', {'profile': profile})
-
