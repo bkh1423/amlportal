@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Scenarios - AML Portal{% endblock %}
+
+{% block content %}
+<div style="text-align:center; margin-top:60px;">
+  <h1>Risk & Compliance Scenarios</h1>
+  <p style="color:#b8bdc7;">Select a category to start the assessment</p>
+</div>
+
+<div style="max-width:900px; margin:60px auto;">
+  <!-- Business Profile -->
+  <section style="margin-bottom:60px;">
+    <h2 style="color:#1ed6a1;">Business Profile</h2>
+    {% for s in business_scenarios %}
+      <div style="background:rgba(255,255,255,0.05); padding:20px; border-radius:10px; margin-top:20px;">
+        <h3>{{ s.title }}</h3>
+        <p style="color:#b8bdc7;">{{ s.description }}</p>
+        <a href="#" style="color:#1ed6a1;">Start →</a>
+      </div>
+    {% empty %}
+      <p style="color:#888;">No active business scenarios.</p>
+    {% endfor %}
+  </section>
+
+  <!-- Compliance Stack -->
+  <section style="margin-bottom:60px;">
+    <h2 style="color:#1ed6a1;">Compliance Stack</h2>
+    {% for s in compliance_scenarios %}
+      <div style="background:rgba(255,255,255,0.05); padding:20px; border-radius:10px; margin-top:20px;">
+        <h3>{{ s.title }}</h3>
+        <p style="color:#b8bdc7;">{{ s.description }}</p>
+        <a href="#" style="color:#1ed6a1;">Start →</a>
+      </div>
+    {% empty %}
+      <p style="color:#888;">No active compliance scenarios.</p>
+    {% endfor %}
+  </section>
+
+  <!-- Risk Evaluation -->
+  <section>
+    <h2 style="color:#1ed6a1;">Risk Evaluation</h2>
+    {% for s in risk_scenarios %}
+      <div style="background:rgba(255,255,255,0.05); padding:20px; border-radius:10px; margin-top:20px;">
+        <h3>{{ s.title }}</h3>
+        <p style="color:#b8bdc7;">{{ s.description }}</p>
+        <a href="#" style="color:#1ed6a1;">Start →</a>
+      </div>
+    {% empty %}
+      <p style="color:#888;">No active risk scenarios.</p>
+    {% endfor %}
+  </section>
+</div>
+{% endblock %}

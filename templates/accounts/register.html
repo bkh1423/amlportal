@@ -67,19 +67,51 @@
     }
     button:hover { background-color: #19b88c; box-shadow: 0 0 15px rgba(30,214,161,0.4); }
     p a { color: #1ed6a1; text-decoration: none; }
+    #message-box {
+      position: fixed;
+      top: 80px;
+      right: 25px;
+      background: rgba(30,214,161,0.95);
+      color: #0c0e14;
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-weight: 600;
+      box-shadow: 0 0 25px rgba(30,214,161,0.5);
+      opacity: 0;
+      transform: translateY(-20px);
+      animation: fadeIn 0.5s forwards;
+    }
+    @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
   <div class="glow-top-right"></div>
   <div class="glow-bottom-left"></div>
+
+  {% if messages %}
+  <div id="message-box">
+    {% for message in messages %}
+      {{ message }}
+    {% endfor %}
+  </div>
+  <script>
+    setTimeout(() => {
+      const msg = document.getElementById("message-box");
+      if (msg) msg.style.opacity = 0;
+      setTimeout(() => msg && msg.remove(), 500);
+    }, 3000);
+  </script>
+  {% endif %}
+
   <div class="form-container">
     <h2>Create Account</h2>
     <form method="POST">
       {% csrf_token %}
       <input type="text" name="username" placeholder="Username" required />
       <input type="email" name="email" placeholder="Email" required />
-      <input type="password" name="password1" placeholder="Password" required />
-      <input type="password" name="password2" placeholder="Confirm Password" required />
+      <input type="password" name="password" placeholder="Password" required />
+      <input type="text" name="company_name" placeholder="Company Name (optional)" />
+      <input type="text" name="role" placeholder="Role (optional)" />
       <button type="submit">Sign Up</button>
     </form>
     <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>

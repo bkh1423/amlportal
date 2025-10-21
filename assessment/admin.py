@@ -1,7 +1,17 @@
 from django.contrib import admin
-from .models import Assessment
+from .models import Scenario, Question, Choice
 
-@admin.register(Assessment)
-class AssessmentAdmin(admin.ModelAdmin):
-    list_display = ('user', 'business_type', 'customer_base_type', 'platform_type', 'created_at')
-    list_filter = ('business_type', 'platform_type', 'location')
+class ChoiceInline(admin.TabularInline):
+    model = Choice
+    extra = 2
+
+class QuestionAdmin(admin.ModelAdmin):
+    inlines = [ChoiceInline]
+    list_display = ('text', 'scenario')
+
+class ScenarioAdmin(admin.ModelAdmin):
+    list_display = ('title', 'category', 'is_active')
+    list_filter = ('category', 'is_active')
+
+admin.site.register(Scenario, ScenarioAdmin)
+admin.site.register(Question, QuestionAdmin)
