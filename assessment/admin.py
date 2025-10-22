@@ -1,55 +1,70 @@
 from django.contrib import admin
-from .models import Scenario, Section, Question, Choice, ScenarioResult
+from .models import BusinessType, Scenario, Section, Question, Choice, ScenarioResult
 
 
-# 🔘 عرض الخيارات داخل السؤال
-class ChoiceInline(admin.TabularInline):
-    model = Choice
-    extra = 2
-
-
-# 📋 عرض الأسئلة داخل القسم
-class QuestionInline(admin.TabularInline):
-    model = Question
-    extra = 1
-
-
-# 📂 عرض الأقسام داخل السيناريو
+# ======== Inline Configurations ========
 class SectionInline(admin.TabularInline):
     model = Section
     extra = 1
 
 
-# ⚙️ لوحة السيناريو
+class QuestionInline(admin.TabularInline):
+    model = Question
+    extra = 1
+
+
+class ChoiceInline(admin.TabularInline):
+    model = Choice
+    extra = 2
+
+
+# ======== Admin Configurations ========
+
+@admin.register(BusinessType)
+class BusinessTypeAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    search_fields = ('name',)
+
+
 @admin.register(Scenario)
 class ScenarioAdmin(admin.ModelAdmin):
-    list_display = ('title', 'is_active')
+    list_display = ('title', 'business_type', 'is_active')
+    list_filter = ('business_type', 'is_active')
+    search_fields = ('title', 'business_type__name')
     inlines = [SectionInline]
-    search_fields = ('title',)
-    list_filter = ('is_active',)
 
 
-# ⚙️ لوحة الأقسام
 @admin.register(Section)
 class SectionAdmin(admin.ModelAdmin):
     list_display = ('name', 'scenario')
+    search_fields = ('name', 'scenario__title')
     inlines = [QuestionInline]
-    list_filter = ('name', 'scenario')
-    search_fields = ('scenario__title',)
 
 
-# ⚙️ لوحة الأسئلة
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ('text', 'section')
+    search_fields = ('text', 'section__name')
     inlines = [ChoiceInline]
-    search_fields = ('text',)
-    list_filter = ('section__scenario', 'section__name')
 
 
-# ⚙️ لوحة النتائج النهائية
 @admin.register(ScenarioResult)
 class ScenarioResultAdmin(admin.ModelAdmin):
-    list_display = ('scenario', 'risk_level', 'monitoring_frequency')
-    search_fields = ('scenario__title', 'risk_level', 'tags')
-    list_filter = ('risk_level', 'monitoring_frequency')
+    list_display = ('business_type', 'title', 'risk_level', 'monitoring_frequency')
+    list_filter = ('business_type', 'risk_level')
+    search_fields = ('title', 'business_type__name', 'tags')
+    
+    fieldsets = (
+        ('Basic Info', {
+            'fields': ('business_type', 'title', 'output_type', 'risk_level')
+        }),
+        ('Details', {
+            'fields': ('recommended_services', 'sanctions_list_activation', 'monitoring_frequency', 'tags')
+        }),
+        ('Activated Scenarios / Rules', {
+            'fields': ('activated_scenarios',)
+        }),
+        ('Output Summary', {
+            'fields': ('output_summary',)
+        }),
+    )
