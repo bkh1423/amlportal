@@ -1,7 +1,7 @@
 from django.db import models
 
 
-# ✅ 1. نوع النشاط التجاري (السؤال الأساسي الثابت)
+# ✅ 1. نوع النشاط التجاري (Business Type)
 class BusinessType(models.Model):
     name = models.CharField(max_length=100, unique=True)  # مثل: Money Exchange, Insurance, BNPL
 
@@ -9,28 +9,21 @@ class BusinessType(models.Model):
         return self.name
 
 
-# ✅ 2. السيناريو الرئيسي المرتبط بنوع النشاط
-class Scenario(models.Model):
-    business_type = models.ForeignKey(BusinessType, on_delete=models.CASCADE, related_name="scenarios")
-    title = models.CharField(max_length=255)
-    description = models.TextField(blank=True)
-    is_active = models.BooleanField(default=True)
-
-    def __str__(self):
-        return f"{self.business_type.name} - {self.title}"
-
-
-# ✅ 3. الأقسام الفرعية داخل السيناريو
+# ✅ 2. الأقسام (Sections) المرتبطة مباشرة بالنشاط
 class Section(models.Model):
-    scenario = models.ForeignKey(Scenario, on_delete=models.CASCADE, related_name="sections")
+    business_type = models.ForeignKey(
+        BusinessType,
+        on_delete=models.CASCADE,
+        related_name="sections"
+    )
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
 
     def __str__(self):
-        return f"{self.scenario.title} - {self.name}"
+        return f"{self.business_type.name} - {self.name}"
 
 
-# ✅ 4. الأسئلة داخل كل قسم
+# ✅ 3. الأسئلة داخل كل قسم
 class Question(models.Model):
     section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name='questions')
     text = models.TextField()
@@ -39,7 +32,7 @@ class Question(models.Model):
         return self.text[:80]
 
 
-# ✅ 5. الخيارات لكل سؤال (اختياري، مثل Yes / No)
+# ✅ 4. الخيارات (مثل Yes / No)
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='choices')
     text = models.CharField(max_length=255)
@@ -49,11 +42,15 @@ class Choice(models.Model):
         return self.text
 
 
-# ✅ 6. النتايج الخاصة بكل Business Type
+# ✅ 5. النتائج الخاصة بكل Business Type
 class ScenarioResult(models.Model):
-    business_type = models.ForeignKey(BusinessType, on_delete=models.CASCADE, related_name='results')
+    business_type = models.ForeignKey(
+        BusinessType,
+        on_delete=models.CASCADE,
+        related_name='results'
+    )
     title = models.CharField(max_length=255)
-    
+
     # 🔸 الحقول الخاصة بالنتيجة
     output_type = models.CharField(max_length=100, default="Result")
     risk_level = models.CharField(max_length=50, choices=[
@@ -65,7 +62,7 @@ class ScenarioResult(models.Model):
     sanctions_list_activation = models.TextField(blank=True, help_text="Example: UNSC, OFAC, EU, SAMA")
     monitoring_frequency = models.CharField(max_length=100, blank=True, help_text="Example: Real-Time or Periodic")
     tags = models.TextField(blank=True, help_text="Example: High Risk, Geo-Flagged, Manual Review")
-    
+
     # 🔸 الأكتفيت سيناريو / رولز الخاصة بكل نتيجة
     activated_scenarios = models.TextField(blank=True, help_text="List of activated rules or scenarios")
 
