@@ -1,10 +1,12 @@
 from pathlib import Path
 import os
 
+# ==============================
+# المسار الأساسي للمشروع
+# ==============================
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-0v)g0h=(s@%p3o+#_zgxuh%=@$qtegfr7085zhilc68)=8eg#5'
-
 DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
@@ -15,9 +17,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+   
     'accounts',
     'assessment',
     'results',
+    'dashboard',  
 ]
 
 MIDDLEWARE = [
@@ -35,7 +40,7 @@ ROOT_URLCONF = 'amlportal.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'templates'],  # مجلد القوالب العام
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

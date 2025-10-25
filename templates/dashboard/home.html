@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+  <h2 class="mb-4 text-center">📊 لوحة التحكم - نظام تقييم الامتثال</h2>
+
+  <!-- بطاقات الإحصائيات -->
+  <div class="row">
+    <div class="col-md-4 mb-3">
+      <div class="card text-center shadow-sm p-3 border-0 bg-light">
+        <h5>👥 عدد المستخدمين</h5>
+        <h2 class="fw-bold text-primary">{{ users_count }}</h2>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="card text-center shadow-sm p-3 border-0 bg-light">
+        <h5>🧾 عدد التقييمات</h5>
+        <h2 class="fw-bold text-success">{{ completed_evaluations }}</h2>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <div class="card text-center shadow-sm p-3 border-0 bg-light">
+        <h5>📚 عدد الأقسام</h5>
+        <h2 class="fw-bold text-info">{{ sections_count }}</h2>
+      </div>
+    </div>
+  </div>
+
+  <!-- الرسم البياني حسب الأقسام -->
+  <div class="card mt-5 p-4 shadow-sm border-0">
+    <h5 class="mb-3">📈 نسبة الامتثال حسب الأقسام</h5>
+    <canvas id="sectionChart" height="120"></canvas>
+  </div>
+
+  <!-- الرسم البياني الدائري للخطورة -->
+  <div class="card mt-5 p-4 shadow-sm border-0">
+    <h5 class="mb-3">🧩 توزيع التقييمات حسب مستوى الخطورة</h5>
+    <canvas id="riskChart" height="150"></canvas>
+  </div>
+</div>
+
+<!-- تحميل مكتبة Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  // ====== الرسم البياني حسب الأقسام ======
+  const sectionsData = JSON.parse('{{ sections_data|safe|escapejs }}');
+  const labels = sectionsData.map(item => item.name);
+  const scores = sectionsData.map(item => item.avg_score ? item.avg_score.toFixed(2) : 0);
+
+  const ctx = document.getElementById('sectionChart');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'نسبة الامتثال (%)',
+        data: scores,
+        borderWidth: 1,
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+      }]
+    },
+    options: {
+      scales: { 
+        y: { beginAtZero: true, max: 100 },
+      },
+      plugins: { legend: { display: false } }
+    }
+  });
+
+  // ====== الرسم البياني الدائري ======
+  const riskValues = JSON.parse('{{ risk_values|safe|escapejs }}');
+
+  const riskData = {
+    labels: ['High Risk', 'Medium Risk', 'Low Risk'],
+    datasets: [{
+      label: 'عدد التقييمات',
+      data: riskValues,
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.7)',   // أحمر للخطر العالي
+        'rgba(255, 205, 86, 0.7)',   // أصفر للخطر المتوسط
+        'rgba(75, 192, 192, 0.7)'    // أخضر للخطر المنخفض
+      ],
+      borderColor: ['#ff6384', '#ffcd56', '#4bc0c0'],
+      borderWidth: 1
+    }]
+  };
+
+  const riskCtx = document.getElementById('riskChart');
+  new Chart(riskCtx, {
+    type: 'pie',
+    data: riskData,
+    options: {
+      plugins: {
+        legend: { position: 'bottom' }
+      }
+    }
+  });
+</script>
+
+{% endblock %}
