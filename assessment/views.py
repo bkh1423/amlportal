@@ -1,6 +1,13 @@
 from django.shortcuts import render, get_object_or_404
 from .models import ScenarioResult
 
+def assessment_sections(request):
+    """
+    صفحة الأقسام التعريفية قبل البدء في التقييم
+    (Business Profile / Compliance Stack / Business-Specific Risk)
+    """
+    return render(request, 'assessment/assessment_sections.html')
+
 
 def scenarios_view(request):
     """
@@ -24,7 +31,7 @@ def scenarios_view(request):
 
 def start_scenario(request, scenario_id):
     """
-    صفحة عرض تفاصيل السيناريو المحدد عند الضغط على Start →
+    صفحة عرض تفاصيل السيناريو المحدد عند الضغط على زر Start
     """
     scenario = get_object_or_404(ScenarioResult, id=scenario_id)
     return render(request, 'assessment/start_scenario.html', {'scenario': scenario})

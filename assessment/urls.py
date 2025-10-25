@@ -2,6 +2,9 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    # صفحة الأقسام التعريفية (قبل البدء في التقييم)
+    path('sections/', views.assessment_sections, name='assessment_sections'),
+
     # الصفحة الرئيسية للتقييمات (السيناريوهات)
     path('', views.scenarios_view, name='assessment_home'),
 

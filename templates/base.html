@@ -8,53 +8,39 @@
   <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <style>
-    /* ===== الأساس ===== */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: "Inter", sans-serif;
-      background: radial-gradient(circle at top right, #0a0f13, #050709 80%);
+      background: radial-gradient(circle at top right, #0a0f13, #050709 85%);
       color: #ffffff;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
       position: relative;
       overflow-x: hidden;
-      animation: fadeIn 0.8s ease-in-out;
     }
 
-    /* ===== الأنيميشن ===== */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ===== الخلفية الشبكية ===== */
+    /* ===== خلفية الشبكة ===== */
     body::before {
       content: "";
       position: absolute;
       inset: 0;
       background-image:
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size: 80px 80px;
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 70px 70px;
       z-index: 0;
     }
 
-    /* ===== توهجات خفيفة ===== */
+    /* ===== توهجات ===== */
     .glow {
       position: absolute;
       border-radius: 50%;
-      filter: blur(160px);
+      filter: blur(180px);
       opacity: 0.6;
       z-index: 1;
     }
     .glow.top {
-      top: -100px; right: -100px;
+      top: -150px; right: -150px;
       background: radial-gradient(circle, rgba(30,214,161,0.25), transparent 70%);
     }
     .glow.bottom {
@@ -62,72 +48,30 @@
       background: radial-gradient(circle, rgba(72,115,250,0.25), transparent 70%);
     }
 
-    /* ===== Sidebar ===== */
-    .sidebar {
-      position: fixed;
-      top: 0; left: 0;
-      width: 250px;
-      height: 100%;
-      background: rgba(255,255,255,0.03);
-      backdrop-filter: blur(10px);
-      border-right: 1px solid rgba(255,255,255,0.05);
-      box-shadow: 4px 0 25px rgba(0,0,0,0.3);
-      display: flex;
-      flex-direction: column;
-      padding: 100px 20px 30px;
-      gap: 10px;
-      transition: transform 0.4s ease;
-      z-index: 5;
-    }
-
-    .sidebar.hidden { transform: translateX(-100%); }
-
-    .sidebar h3 {
-      color: #1ed6a1;
-      text-align: center;
-      font-family: "Abhaya Libre", serif;
-      margin-bottom: 15px;
-    }
-
-    .sidebar a {
-      text-decoration: none;
-      color: #b8bdc7;
-      padding: 12px 15px;
-      border-radius: 8px;
-      font-weight: 500;
-      transition: 0.3s;
-      display: block;
-    }
-
-    .sidebar a:hover {
-      background: rgba(30,214,161,0.15);
-      color: #1ed6a1;
-      transform: translateX(5px);
-    }
-
-    /* ===== Header ===== */
+    /* ===== الهيدر ===== */
     header {
       position: fixed;
       top: 0; left: 0; right: 0;
-      z-index: 10;
+      z-index: 100;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 60px;
-      background: rgba(0,0,0,0.25);
-      backdrop-filter: blur(8px);
+      padding: 18px 50px;
+      background: rgba(10,15,19,0.8);
+      backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(255,255,255,0.05);
     }
 
     .logo {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .logo-box {
-      width: 38px; height: 38px;
-      background-color: #1ed6a1;
+      width: 40px;
+      height: 40px;
+      background: #1ed6a1;
       border-radius: 10px;
       font-weight: 700;
       font-size: 1.2rem;
@@ -138,69 +82,162 @@
       box-shadow: 0 0 25px rgba(30,214,161,0.3);
     }
 
-    .logo-text { font-weight: 700; color: #e0e6ed; font-size: 1.2rem; }
+    .logo-text {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #e0e6ed;
+    }
 
-    nav { display: flex; gap: 15px; }
+    /* ===== زر المربعات ===== */
+    .menu-toggle {
+      background: rgba(30,214,161,0.1);
+      border: 1px solid rgba(30,214,161,0.3);
+      color: #1ed6a1;
+      font-size: 1.5rem;
+      padding: 10px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .menu-toggle:hover { background: rgba(30,214,161,0.25); }
 
-    nav a {
-      padding: 10px 25px;
-      border-radius: 30px;
-      border: 1px solid rgba(255,255,255,0.2);
+    /* ===== القائمة الجانبية مع تمرير طولي فقط ===== */
+    .sidebar {
+      position: fixed;
+      top: 70px; /* ✅ تبدأ تحت الهيدر */
+      left: -280px;
+      width: 260px;
+      height: calc(100vh - 70px); /* ✅ لا تتجاوز الشاشة */
+      background: rgba(12,15,20,0.97);
+      backdrop-filter: blur(12px);
+      border-right: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 8px 0 25px rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.4s ease;
+      z-index: 99;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      max-height: 100vh;
+      padding: 15px 25px 20px; /* ✅ تعديل المسافة */
+      scrollbar-width: thin;
+      scrollbar-color: #1ed6a1 rgba(255,255,255,0.1);
+    }
+
+    .sidebar::-webkit-scrollbar { width: 6px; }
+    .sidebar::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+    .sidebar::-webkit-scrollbar-thumb { background-color: #1ed6a1; border-radius: 10px; }
+
+    .sidebar.show { left: 0; }
+
+    .menu-section { display: flex; flex-direction: column; gap: 10px; }
+
+    .menu-title {
+      font-size: 0.8rem;
+      color: #808080;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .sidebar a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #e0e6ed;
+      text-decoration: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: 0.3s;
+    }
+
+    .sidebar a:hover {
+      background: rgba(30,214,161,0.1);
+      color: #1ed6a1;
+      transform: translateX(5px);
+    }
+
+    .sidebar svg { width: 18px; height: 18px; }
+
+    /* ✅ تعديل شكل Help Center فقط */
+    .help-box {
+      background: rgba(30,214,161,0.05);
+      border: 1px solid rgba(30,214,161,0.2);
+      border-radius: 10px;
+      padding: 15px;
+      color: #b8bdc7;
+      font-size: 0.9rem;
+      text-align: center;
+      margin-bottom: 15px;
+      line-height: 1.6;
+      word-wrap: break-word;
+    }
+
+    .help-box strong {
+      display: block;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .help-box span {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .help-box a {
+      display: inline-block;
+      background: #1ed6a1;
+      color: #0a0f13;
+      padding: 8px 15px;
+      border-radius: 6px;
+      font-weight: 600;
       text-decoration: none;
       transition: 0.3s;
-      font-weight: 500;
     }
 
-    .btn-primary { background-color: #1ed6a1; color: #0c0e14; font-weight: 600; }
-    .btn-secondary { background: rgba(255,255,255,0.03); color: #e0e6ed; }
+    .help-box a:hover { background: #12b686; }
 
-    nav a:hover { background: rgba(255,255,255,0.08); }
+    .logout-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: rgba(255,107,107,0.1);
+      color: #ff6b6b;
+      padding: 10px 0;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+      border: 1px solid rgba(255,107,107,0.2);
+    }
+    .logout-btn:hover {
+      background: rgba(255,107,107,0.25);
+      color: #ff8a8a;
+      transform: translateY(-2px);
+    }
 
-    /* ===== محتوى الصفحة ===== */
     main {
-      flex: 1;
-      z-index: 2;
       position: relative;
-      padding: 120px 50px 60px;
+      z-index: 2;
+      padding: 120px 40px 60px;
       transition: margin-left 0.4s ease;
-      margin-left: 260px;
     }
 
-    main.full { margin-left: 0; }
-
-    /* ===== Footer ===== */
     footer {
-      background: radial-gradient(circle at top left, rgba(30,214,161,0.08), transparent 70%);
+      background: rgba(255,255,255,0.02);
       backdrop-filter: blur(8px);
       color: #b8bdc7;
       text-align: center;
-      padding: 25px 10px;
-      font-size: 0.95rem;
+      padding: 20px 10px;
+      font-size: 0.9rem;
       border-top: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 -5px 25px rgba(30,214,161,0.08);
-      z-index: 3;
       margin-top: auto;
     }
 
     footer span { color: #1ed6a1; font-weight: 600; }
-
-    /* ===== زر القائمة الجانبية للموبايل ===== */
-    .menu-btn {
-      background: rgba(255,255,255,0.05);
-      border: none;
-      color: #1ed6a1;
-      padding: 10px 15px;
-      border-radius: 8px;
-      cursor: pointer;
-      display: none;
-    }
-
-    @media (max-width: 900px) {
-      .menu-btn { display: inline-block; }
-      .sidebar { transform: translateX(-100%); }
-      .sidebar.active { transform: translateX(0); }
-      main { margin-left: 0; }
-    }
   </style>
 </head>
 
@@ -208,32 +245,91 @@
   <div class="glow top"></div>
   <div class="glow bottom"></div>
 
-  {% include 'header.html' %}
-
   {% if user.is_authenticated %}
-  <div class="sidebar hidden" id="sidebar">
-    <h3>AML Portal</h3>
-    <a href="/">Home</a>
-    <a href="{% url 'assessment_home' %}">Assessments</a>
-    <a href="{% url 'dashboard_home' %}">Dashboard</a>
-    <a href="{% url 'profile' %}">Profile</a>
-    <a href="{% url 'logout' %}" style="color:#ff6b6b;">Logout</a>
-  </div>
+  <header>
+    <div class="logo">
+      <button class="menu-toggle" id="menuToggle">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="6" height="6"/>
+          <rect x="15" y="3" width="6" height="6"/>
+          <rect x="3" y="15" width="6" height="6"/>
+          <rect x="15" y="15" width="6" height="6"/>
+        </svg>
+      </button>
+      <div class="logo-box">H</div>
+      <div class="logo-text">AML</div>
+    </div>
+  </header>
+
+  <nav class="sidebar" id="sidebar">
+    <div>
+      <div class="menu-title">Menu</div>
+      <div class="menu-section">
+        <a href="{% url 'home' %}">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12L12 3l9 9v9h-6v-6H9v6H3z"/></svg>
+          Home
+        </a>
+        <a href="{% url 'assessment_sections' %}">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v2H4zM4 10h10v2H4zM4 16h6v2H4z"/></svg>
+          Assessment Section
+        </a>
+        <a href="{% url 'dashboard_home' %}">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="13" width="4" height="8"/><rect x="10" y="9" width="4" height="12"/><rect x="17" y="5" width="4" height="16"/></svg>
+          Dashboard
+        </a>
+        <a href="{% url 'assessment_home' %}">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="18" rx="2" ry="2"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="16" y2="18"/></svg>
+          Assessment
+        </a>
+        <a href="#">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+          Solutions
+        </a>
+      </div>
+    </div>
+
+    <div>
+      <div class="help-box">
+        <strong>Help Center</strong>
+        <span>Having trouble? Contact us</span>
+        <a href="#">Contact us</a>
+      </div>
+
+      <a href="{% url 'logout' %}" class="logout-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" stroke="#ff6b6b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        Logout
+      </a>
+    </div>
+  </nav>
   {% endif %}
 
-  <main id="main-content">
+  <main>
     {% block content %}{% endblock %}
   </main>
 
-  {% include 'footer.html' %}
+  <footer>
+    © 2025 <span>AML Compliance Portal</span> — All Rights Reserved
+  </footer>
 
   <script>
-    const sidebar = document.getElementById('sidebar');
-    const main = document.getElementById('main-content');
-    function toggleSidebar() {
-      sidebar.classList.toggle('hidden');
-      main.classList.toggle('full');
+    const menuToggle = document.getElementById("menuToggle");
+    const sidebar = document.getElementById("sidebar");
+
+    if(menuToggle){
+      menuToggle.addEventListener("click", () => {
+        sidebar.classList.toggle("show");
+      });
     }
+
+    document.addEventListener("click", (e) => {
+      if (sidebar && !sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+        sidebar.classList.remove("show");
+      }
+    });
   </script>
 </body>
 </html>

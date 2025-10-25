@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% block title %}Assessment Section{% endblock %}
+{% block content %}
+
+<style>
+  /* ===== إعدادات الصفحة العامة ===== */
+  .assessment-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 20px 80px;
+    min-height: 100vh;
+    position: relative;
+    background: radial-gradient(circle at top left, rgba(30,214,161,0.1), rgba(0,0,0,0.9) 70%);
+    color: #fff;
+  }
+
+  .assessment-container h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    font-family: "Abhaya Libre", serif;
+    margin-bottom: 10px;
+  }
+
+  .assessment-container p {
+    color: #b5b9c2;
+    max-width: 600px;
+    line-height: 1.6;
+    margin-bottom: 50px;
+    font-size: 1.05rem;
+  }
+
+  /* ===== تصميم البطاقات ===== */
+  .sections-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 35px;
+    width: 100%;
+    max-width: 1000px;
+    z-index: 2;
+  }
+
+  .section-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px 25px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(0,0,0,0.3);
+    transition: all 0.3s ease-in-out;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .section-card:hover {
+    transform: translateY(-8px);
+    border-color: #1ed6a1;
+    box-shadow: 0 0 25px rgba(30,214,161,0.2);
+  }
+
+  .section-card h2 {
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    font-family: "Abhaya Libre", serif;
+  }
+
+  .section-card p {
+    color: #aeb5bf;
+    font-size: 1rem;
+    margin-bottom: 25px;
+    line-height: 1.6;
+  }
+
+  .section-card a {
+    display: inline-block;
+    padding: 10px 25px;
+    border-radius: 25px;
+    background-color: #1ed6a1;
+    color: #0a0f13;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s;
+  }
+
+  .section-card a:hover {
+    background-color: #17b589;
+  }
+
+  /* ===== تأثير الخلفية المتوهجة ===== */
+  .background-glow {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    filter: blur(150px);
+    opacity: 0.3;
+    background: radial-gradient(circle, rgba(30,214,161,0.4), transparent 70%);
+    top: 0;
+    right: 0;
+    z-index: 0;
+    animation: pulse 6s infinite ease-in-out;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.1); }
+  }
+</style>
+
+<div class="assessment-container">
+  <div class="background-glow"></div>
+
+  <h1>Assessment Section</h1>
+  <p>
+    Each section evaluates a different part of your organization’s AML compliance process.<br>
+    Select a section below to begin your assessment journey.
+  </p>
+
+  <div class="sections-grid">
+    <!-- Business Profile -->
+    <div class="section-card">
+      <h2>Business Profile</h2>
+      <p>
+        Understand your organization’s nature, structure, and business model to determine its foundational AML risk exposure.
+      </p>
+      <a href="{% url 'scenarios' %}?section=business">Start</a>
+    </div>
+
+    <!-- Compliance Stack -->
+    <div class="section-card">
+      <h2>Compliance Stack</h2>
+      <p>
+        Review your AML policies, procedures, and governance framework that ensure regulatory compliance and effective risk mitigation.
+      </p>
+      <a href="{% url 'scenarios' %}?section=compliance">Start</a>
+    </div>
+
+    <!-- Business-Specific Risk -->
+    <div class="section-card">
+      <h2>Business-Specific Risk</h2>
+      <p>
+        Evaluate risk factors unique to your operations, customers, and jurisdictions to strengthen AML strategies and monitoring systems.
+      </p>
+      <a href="{% url 'scenarios' %}?section=risk">Start</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
