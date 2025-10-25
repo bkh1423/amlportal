@@ -1,53 +1,183 @@
 {% extends 'base.html' %}
-{% block title %}Scenarios - AML Portal{% endblock %}
-
+{% block title %}Assessment Sections - AML Portal{% endblock %}
 {% block content %}
-<div style="text-align:center; margin-top:60px;">
-  <h1>Risk & Compliance Scenarios</h1>
-  <p style="color:#b8bdc7;">Select a category to start the assessment</p>
+
+<style>
+  /* 🎯 إلغاء الفراغ الجانبي اللي يجي من الـ base */
+  main {
+    margin-left: 0 !important;
+    padding: 120px 20px 60px !important;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap');
+
+  body {
+    font-family: "Manrope", sans-serif;
+    background: radial-gradient(circle at top right, #0a0f13, #050709 80%);
+    color: #ffffff;
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* ===== الخلفية الشبكية ===== */
+  body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size: 70px 70px;
+    z-index: 0;
+  }
+
+  /* ===== الحاوية الرئيسية ===== */
+  .section-container {
+    position: relative;
+    z-index: 2;
+    max-width: 1100px;
+    margin: 100px auto;
+    text-align: center;
+    padding: 0 20px;
+  }
+
+  h1 {
+    font-family: "Abhaya Libre", serif;
+    font-weight: 800;
+    color: #1ed6a1;
+    margin-bottom: 35px;
+    font-size: 3rem;
+    letter-spacing: -0.5px;
+  }
+
+  .section-container > p {
+    color: #b8bdc7;
+    font-size: 1.05rem;
+    line-height: 1.8;
+    max-width: 800px;
+    margin: 0 auto 60px;
+  }
+
+  /* ===== شبكة الأقسام ===== */
+  .section-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 35px;
+    justify-items: center;
+  }
+
+  .section-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 40px 30px;
+    text-align: center;
+    transition: 0.35s ease;
+    box-shadow: 0 0 25px rgba(30,214,161,0.08);
+    width: 100%;
+    max-width: 330px;
+  }
+
+  .section-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 35px rgba(30,214,161,0.3);
+    border-color: rgba(30,214,161,0.3);
+  }
+
+  .section-card h2 {
+    color: #ffffff;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    letter-spacing: -0.3px;
+  }
+
+  .section-card p {
+    color: #b8bdc7;
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 25px;
+  }
+
+  .btn-start {
+    display: inline-block;
+    background: #1ed6a1;
+    color: #0c0e14;
+    font-weight: 600;
+    padding: 10px 26px;
+    border-radius: 25px;
+    text-decoration: none;
+    transition: 0.3s ease;
+  }
+
+  .btn-start:hover {
+    background: #14b88a;
+    transform: scale(1.06);
+  }
+
+  /* ===== أنيميشن دخول ناعم للكروت ===== */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(25px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .section-card {
+    opacity: 0;
+    animation: fadeInUp 0.8s ease forwards;
+  }
+
+  .section-card:nth-child(1) { animation-delay: 0.1s; }
+  .section-card:nth-child(2) { animation-delay: 0.25s; }
+  .section-card:nth-child(3) { animation-delay: 0.4s; }
+</style>
+
+<div class="section-container">
+  <h1>Choose Your Assessment Section</h1>
+  <p>
+    Each section evaluates a different part of your organization’s AML compliance process.<br>
+    Select a section below to begin your assessment journey.
+  </p>
+
+  <div class="section-grid">
+
+    <!-- Section 1 -->
+    <div class="section-card">
+      <h2>Business Profile</h2>
+      <p>
+        Understand your organization’s nature, structure, and business model  
+        to determine its foundational AML risk exposure.
+      </p>
+      <a href="{% url 'start_scenario' 1 %}" class="btn-start">Start</a>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="section-card">
+      <h2>Compliance Stack</h2>
+      <p>
+        Review your AML policies, procedures, and governance framework  
+        that ensure regulatory compliance and effective risk mitigation.
+      </p>
+      <a href="{% url 'start_scenario' 2 %}" class="btn-start">Start</a>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="section-card">
+      <h2>Business-Specific Risk</h2>
+      <p>
+        Evaluate risk factors unique to your operations, customers, and jurisdictions  
+        to strengthen AML strategies and monitoring systems.
+      </p>
+      <a href="{% url 'start_scenario' 3 %}" class="btn-start">Start</a>
+    </div>
+  </div>
 </div>
 
-<div style="max-width:900px; margin:60px auto;">
-  <!-- Business Profile -->
-  <section style="margin-bottom:60px;">
-    <h2 style="color:#1ed6a1;">Business Profile</h2>
-    {% for s in business_scenarios %}
-      <div style="background:rgba(255,255,255,0.05); padding:20px; border-radius:10px; margin-top:20px;">
-        <h3>{{ s.title }}</h3>
-        <p style="color:#b8bdc7;">{{ s.description }}</p>
-        <a href="#" style="color:#1ed6a1;">Start →</a>
-      </div>
-    {% empty %}
-      <p style="color:#888;">No active business scenarios.</p>
-    {% endfor %}
-  </section>
-
-  <!-- Compliance Stack -->
-  <section style="margin-bottom:60px;">
-    <h2 style="color:#1ed6a1;">Compliance Stack</h2>
-    {% for s in compliance_scenarios %}
-      <div style="background:rgba(255,255,255,0.05); padding:20px; border-radius:10px; margin-top:20px;">
-        <h3>{{ s.title }}</h3>
-        <p style="color:#b8bdc7;">{{ s.description }}</p>
-        <a href="#" style="color:#1ed6a1;">Start →</a>
-      </div>
-    {% empty %}
-      <p style="color:#888;">No active compliance scenarios.</p>
-    {% endfor %}
-  </section>
-
-  <!-- Risk Evaluation -->
-  <section>
-    <h2 style="color:#1ed6a1;">Risk Evaluation</h2>
-    {% for s in risk_scenarios %}
-      <div style="background:rgba(255,255,255,0.05); padding:20px; border-radius:10px; margin-top:20px;">
-        <h3>{{ s.title }}</h3>
-        <p style="color:#b8bdc7;">{{ s.description }}</p>
-        <a href="#" style="color:#1ed6a1;">Start →</a>
-      </div>
-    {% empty %}
-      <p style="color:#888;">No active risk scenarios.</p>
-    {% endfor %}
-  </section>
-</div>
 {% endblock %}

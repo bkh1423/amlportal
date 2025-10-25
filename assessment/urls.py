@@ -1,5 +1,13 @@
 from django.urls import path
+from . import views
 
 urlpatterns = [
-    path('', lambda request: None, name='assessment_home'),  
+    # الصفحة الرئيسية للتقييمات (السيناريوهات)
+    path('', views.scenarios_view, name='assessment_home'),
+
+    # صفحة السيناريوهات المقسمة (Business / Compliance / Risk)
+    path('scenarios/', views.scenarios_view, name='scenarios'),
+
+    # صفحة عرض التفاصيل لكل سيناريو
+    path('start/<int:scenario_id>/', views.start_scenario, name='start_scenario'),
 ]

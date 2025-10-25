@@ -2,22 +2,23 @@ from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import render
 
-# الصفحة الرئيسية للموقع
+# الصفحة الرئيسية للموقع (home.html)
 def home_view(request):
     return render(request, 'home.html')
 
 urlpatterns = [
-    # لوحة التحكم
+    # 🔸 لوحة تحكم Django الافتراضية
     path('admin/', admin.site.urls),
 
-    # الصفحة الرئيسية
+    # 🔸 الصفحة الرئيسية (تفتح home.html)
     path('', home_view, name='home'),
 
-    # تطبيقات المشروع
-    path('accounts/', include('accounts.urls')),
-    path('assessment/', include('assessment.urls')),
-    path('results/', include('results.urls')),
+    # 🔸 روابط التطبيقات الثلاثة
+    path('accounts/', include('accounts.urls')),     # تسجيل الدخول / المستخدمين
+    path('assessment/', include('assessment.urls')), # صفحات الأسئلة والسيناريوهات
+    path('results/', include('results.urls')),       # نتائج التقييمات
 
-    # ✅ أضيفي هذا السطر لربط الداشبورد
+    # ✅ لوحة القيادة (Dashboard)
     path('dashboard/', include('dashboard.urls')),
 ]
+

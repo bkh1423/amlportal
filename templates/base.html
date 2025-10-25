@@ -3,71 +3,237 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{% block title %}AML Risk & Compliance Assessment Tool{% endblock %}</title>
+  <title>{% block title %}AML Risk & Compliance Portal{% endblock %}</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
   <style>
-    body {
-      font-family: "Inter", sans-serif;
-      background: radial-gradient(circle at top right, #14171f, #0a0c10 75%);
-      color: #ffffff;
-      min-height: 100vh;
+    /* ===== الأساس ===== */
+    * {
+      box-sizing: border-box;
       margin: 0;
-      position: relative;
-      display: flex;
-      flex-direction: column;
+      padding: 0;
     }
 
+    body {
+      font-family: "Inter", sans-serif;
+      background: radial-gradient(circle at top right, #0a0f13, #050709 80%);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    /* ===== الأنيميشن ===== */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== الخلفية الشبكية ===== */
     body::before {
       content: "";
       position: absolute;
       inset: 0;
       background-image:
-        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-      background-size: 90px 90px;
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 80px 80px;
       z-index: 0;
     }
 
-    .glow-top-right, .glow-bottom-left {
+    /* ===== توهجات خفيفة ===== */
+    .glow {
       position: absolute;
-      width: 450px;
-      height: 450px;
       border-radius: 50%;
       filter: blur(160px);
+      opacity: 0.6;
       z-index: 1;
     }
-
-    .glow-top-right {
-      top: -120px;
-      right: -120px;
-      background: radial-gradient(circle, rgba(30,214,161,0.3), transparent 70%);
+    .glow.top {
+      top: -100px; right: -100px;
+      background: radial-gradient(circle, rgba(30,214,161,0.25), transparent 70%);
     }
-
-    .glow-bottom-left {
-      bottom: -150px;
-      left: -150px;
+    .glow.bottom {
+      bottom: -150px; left: -150px;
       background: radial-gradient(circle, rgba(72,115,250,0.25), transparent 70%);
     }
 
+    /* ===== Sidebar ===== */
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 250px;
+      height: 100%;
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(10px);
+      border-right: 1px solid rgba(255,255,255,0.05);
+      box-shadow: 4px 0 25px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      padding: 100px 20px 30px;
+      gap: 10px;
+      transition: transform 0.4s ease;
+      z-index: 5;
+    }
+
+    .sidebar.hidden { transform: translateX(-100%); }
+
+    .sidebar h3 {
+      color: #1ed6a1;
+      text-align: center;
+      font-family: "Abhaya Libre", serif;
+      margin-bottom: 15px;
+    }
+
+    .sidebar a {
+      text-decoration: none;
+      color: #b8bdc7;
+      padding: 12px 15px;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: 0.3s;
+      display: block;
+    }
+
+    .sidebar a:hover {
+      background: rgba(30,214,161,0.15);
+      color: #1ed6a1;
+      transform: translateX(5px);
+    }
+
+    /* ===== Header ===== */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      background: rgba(0,0,0,0.25);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-box {
+      width: 38px; height: 38px;
+      background-color: #1ed6a1;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #0c0e14;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 25px rgba(30,214,161,0.3);
+    }
+
+    .logo-text { font-weight: 700; color: #e0e6ed; font-size: 1.2rem; }
+
+    nav { display: flex; gap: 15px; }
+
+    nav a {
+      padding: 10px 25px;
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.2);
+      text-decoration: none;
+      transition: 0.3s;
+      font-weight: 500;
+    }
+
+    .btn-primary { background-color: #1ed6a1; color: #0c0e14; font-weight: 600; }
+    .btn-secondary { background: rgba(255,255,255,0.03); color: #e0e6ed; }
+
+    nav a:hover { background: rgba(255,255,255,0.08); }
+
+    /* ===== محتوى الصفحة ===== */
     main {
       flex: 1;
       z-index: 2;
       position: relative;
+      padding: 120px 50px 60px;
+      transition: margin-left 0.4s ease;
+      margin-left: 260px;
+    }
+
+    main.full { margin-left: 0; }
+
+    /* ===== Footer ===== */
+    footer {
+      background: radial-gradient(circle at top left, rgba(30,214,161,0.08), transparent 70%);
+      backdrop-filter: blur(8px);
+      color: #b8bdc7;
+      text-align: center;
+      padding: 25px 10px;
+      font-size: 0.95rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 -5px 25px rgba(30,214,161,0.08);
+      z-index: 3;
+      margin-top: auto;
+    }
+
+    footer span { color: #1ed6a1; font-weight: 600; }
+
+    /* ===== زر القائمة الجانبية للموبايل ===== */
+    .menu-btn {
+      background: rgba(255,255,255,0.05);
+      border: none;
+      color: #1ed6a1;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: none;
+    }
+
+    @media (max-width: 900px) {
+      .menu-btn { display: inline-block; }
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.active { transform: translateX(0); }
+      main { margin-left: 0; }
     }
   </style>
 </head>
 
 <body>
-  <div class="glow-top-right"></div>
-  <div class="glow-bottom-left"></div>
+  <div class="glow top"></div>
+  <div class="glow bottom"></div>
 
   {% include 'header.html' %}
 
-  <main>
+  {% if user.is_authenticated %}
+  <div class="sidebar hidden" id="sidebar">
+    <h3>AML Portal</h3>
+    <a href="/">Home</a>
+    <a href="{% url 'assessment_home' %}">Assessments</a>
+    <a href="{% url 'dashboard_home' %}">Dashboard</a>
+    <a href="{% url 'profile' %}">Profile</a>
+    <a href="{% url 'logout' %}" style="color:#ff6b6b;">Logout</a>
+  </div>
+  {% endif %}
+
+  <main id="main-content">
     {% block content %}{% endblock %}
   </main>
 
   {% include 'footer.html' %}
+
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const main = document.getElementById('main-content');
+    function toggleSidebar() {
+      sidebar.classList.toggle('hidden');
+      main.classList.toggle('full');
+    }
+  </script>
 </body>
 </html>

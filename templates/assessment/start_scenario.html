@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}{{ scenario.title }} - Start{% endblock %}
+{% block content %}
+<div style="max-width:800px; margin:60px auto; text-align:center;">
+  <h2 style="color:#1ed6a1;">{{ scenario.title }}</h2>
+  <p style="color:#b8bdc7;">{{ scenario.output_summary|default:"No description available." }}</p>
+  <hr style="border-color:rgba(255,255,255,0.1);" />
+  <p>⚙️ Risk Level: <strong style="color:#1ed6a1;">{{ scenario.risk_level|title }}</strong></p>
+  <p>📁 Type: <strong style="color:#1ed6a1;">{{ scenario.output_type }}</strong></p>
+  <p>🧩 Recommended Services:</p>
+  <p style="color:#b8bdc7;">{{ scenario.recommended_services }}</p>
+
+  <a href="/assessment/" style="display:inline-block; margin-top:30px; color:#1ed6a1;">← Back to Scenarios</a>
+</div>
+{% endblock %}

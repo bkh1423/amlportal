@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
-from django.db.models import Avg
-from assessment.models import Section, ScenarioResult
+from django.db.models import Count
+from assessment.models import BusinessType, Section, ScenarioResult
+
 
 def dashboard_home(request):
     """لوحة التحكم الرئيسية لعرض الإحصائيات"""
@@ -15,15 +16,18 @@ def dashboard_home(request):
     # 📚 عدد الأقسام
     sections_count = Section.objects.count()
 
-    # 📊 نسبة الامتثال لكل قسم
-    sections_data = Section.objects.annotate(avg_score=Avg('scenarios__score')).values('name', 'avg_score')
+    # 📊 عدد التقييمات لكل نوع نشاط (Business Type)
+    sections_data = (
+        BusinessType.objects
+        .annotate(result_count=Count('results'))
+        .values('name', 'result_count')
+    )
 
     # 🧩 توزيع التقييمات حسب مستوى الخطورة
-    high_risk = ScenarioResult.objects.filter(risk_level="High").count()
-    medium_risk = ScenarioResult.objects.filter(risk_level="Medium").count()
-    low_risk = ScenarioResult.objects.filter(risk_level="Low").count()
+    high_risk = ScenarioResult.objects.filter(risk_level='high').count()
+    medium_risk = ScenarioResult.objects.filter(risk_level='medium').count()
+    low_risk = ScenarioResult.objects.filter(risk_level='low').count()
 
-    # نحول القيم لقائمة JSON آمنة
     risk_values = [high_risk, medium_risk, low_risk]
 
     context = {

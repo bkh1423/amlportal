@@ -1,101 +1,201 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% block title %}Dashboard - AML Compliance{% endblock %}
 {% block content %}
 
-<div class="container mt-4">
-  <h2 class="mb-4 text-center">📊 لوحة التحكم - نظام تقييم الامتثال</h2>
+<style>
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .dashboard-wrapper {
+    max-width: 1100px;
+    margin: 100px auto;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(30,214,161,0.15);
+    animation: fadeIn 0.8s ease forwards;
+  }
+
+  .dashboard-header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .dashboard-header h2 {
+    color: #1ed6a1;
+    font-family: "Abhaya Libre", serif;
+    font-weight: 800;
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  .dashboard-header p {
+    color: #b8bdc7;
+    font-size: 1rem;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+    margin-bottom: 50px;
+  }
+
+  .stat-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    transition: 0.3s ease;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 0 25px rgba(30,214,161,0.2);
+  }
+
+  .stat-card h5 {
+    color: #b8bdc7;
+    margin-bottom: 8px;
+  }
+
+  .stat-card h2 {
+    color: #1ed6a1;
+    font-weight: 700;
+    font-size: 2.3rem;
+  }
+
+  .chart-section {
+    background: rgba(255,255,255,0.04);
+    border-radius: 15px;
+    padding: 25px;
+    margin-top: 40px;
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .chart-section h4 {
+    color: #e0e6ed;
+    font-family: "Abhaya Libre", serif;
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+
+  canvas {
+    margin-top: 10px;
+  }
+
+  /* تحسين التفاعل للجوال */
+  @media (max-width: 768px) {
+    .dashboard-wrapper {
+      padding: 25px;
+      margin: 80px 15px;
+    }
+  }
+</style>
+
+<div class="dashboard-wrapper">
+  <div class="dashboard-header">
+    <h2>Dashboard Overview</h2>
+    <p>Monitor compliance metrics and risk distribution in real-time.</p>
+  </div>
 
   <!-- بطاقات الإحصائيات -->
-  <div class="row">
-    <div class="col-md-4 mb-3">
-      <div class="card text-center shadow-sm p-3 border-0 bg-light">
-        <h5>👥 عدد المستخدمين</h5>
-        <h2 class="fw-bold text-primary">{{ users_count }}</h2>
-      </div>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h5>Users</h5>
+      <h2>{{ users_count }}</h2>
     </div>
 
-    <div class="col-md-4 mb-3">
-      <div class="card text-center shadow-sm p-3 border-0 bg-light">
-        <h5>🧾 عدد التقييمات</h5>
-        <h2 class="fw-bold text-success">{{ completed_evaluations }}</h2>
-      </div>
+    <div class="stat-card">
+      <h5>Assessments</h5>
+      <h2>{{ completed_evaluations }}</h2>
     </div>
 
-    <div class="col-md-4 mb-3">
-      <div class="card text-center shadow-sm p-3 border-0 bg-light">
-        <h5>📚 عدد الأقسام</h5>
-        <h2 class="fw-bold text-info">{{ sections_count }}</h2>
-      </div>
+    <div class="stat-card">
+      <h5>Sections</h5>
+      <h2>{{ sections_count }}</h2>
     </div>
   </div>
 
-  <!-- الرسم البياني حسب الأقسام -->
-  <div class="card mt-5 p-4 shadow-sm border-0">
-    <h5 class="mb-3">📈 نسبة الامتثال حسب الأقسام</h5>
+  <!-- الرسم البياني 1 -->
+  <div class="chart-section">
+    <h4>Compliance Rate by Section</h4>
     <canvas id="sectionChart" height="120"></canvas>
   </div>
 
-  <!-- الرسم البياني الدائري للخطورة -->
-  <div class="card mt-5 p-4 shadow-sm border-0">
-    <h5 class="mb-3">🧩 توزيع التقييمات حسب مستوى الخطورة</h5>
-    <canvas id="riskChart" height="150"></canvas>
+  <!-- الرسم البياني 2 -->
+  <div class="chart-section">
+    <h4>Risk Level Distribution</h4>
+    <canvas id="riskChart" height="140"></canvas>
   </div>
 </div>
 
-<!-- تحميل مكتبة Chart.js -->
+<!-- مكتبة Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-  // ====== الرسم البياني حسب الأقسام ======
   const sectionsData = JSON.parse('{{ sections_data|safe|escapejs }}');
-  const labels = sectionsData.map(item => item.name);
-  const scores = sectionsData.map(item => item.avg_score ? item.avg_score.toFixed(2) : 0);
+  const sectionLabels = sectionsData.map(item => item.name);
+  const sectionScores = sectionsData.map(item => item.avg_score ? item.avg_score.toFixed(2) : 0);
+  const riskValues = JSON.parse('{{ risk_values|safe|escapejs }}');
 
-  const ctx = document.getElementById('sectionChart');
-  new Chart(ctx, {
+  // ===== Chart 1: Compliance Rate =====
+  new Chart(document.getElementById('sectionChart').getContext('2d'), {
     type: 'bar',
     data: {
-      labels: labels,
+      labels: sectionLabels,
       datasets: [{
-        label: 'نسبة الامتثال (%)',
-        data: scores,
-        borderWidth: 1,
-        backgroundColor: 'rgba(75, 192, 192, 0.6)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        label: 'Compliance (%)',
+        data: sectionScores,
+        backgroundColor: 'rgba(30,214,161,0.6)',
+        borderColor: '#1ed6a1',
+        borderWidth: 1.5,
+        borderRadius: 8
       }]
     },
     options: {
-      scales: { 
-        y: { beginAtZero: true, max: 100 },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { color: '#b8bdc7' },
+          grid: { color: 'rgba(255,255,255,0.05)' }
+        },
+        x: {
+          ticks: { color: '#b8bdc7' },
+          grid: { display: false }
+        }
       },
       plugins: { legend: { display: false } }
     }
   });
 
-  // ====== الرسم البياني الدائري ======
-  const riskValues = JSON.parse('{{ risk_values|safe|escapejs }}');
-
-  const riskData = {
-    labels: ['High Risk', 'Medium Risk', 'Low Risk'],
-    datasets: [{
-      label: 'عدد التقييمات',
-      data: riskValues,
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.7)',   // أحمر للخطر العالي
-        'rgba(255, 205, 86, 0.7)',   // أصفر للخطر المتوسط
-        'rgba(75, 192, 192, 0.7)'    // أخضر للخطر المنخفض
-      ],
-      borderColor: ['#ff6384', '#ffcd56', '#4bc0c0'],
-      borderWidth: 1
-    }]
-  };
-
-  const riskCtx = document.getElementById('riskChart');
-  new Chart(riskCtx, {
-    type: 'pie',
-    data: riskData,
+  // ===== Chart 2: Risk Level =====
+  new Chart(document.getElementById('riskChart').getContext('2d'), {
+    type: 'doughnut',
+    data: {
+      labels: ['High Risk', 'Medium Risk', 'Low Risk'],
+      datasets: [{
+        data: riskValues,
+        backgroundColor: [
+          'rgba(255,99,132,0.7)',
+          'rgba(255,205,86,0.7)',
+          'rgba(30,214,161,0.7)'
+        ],
+        borderColor: ['#ff6384', '#ffcd56', '#1ed6a1'],
+        borderWidth: 1.2
+      }]
+    },
     options: {
+      cutout: '65%',
       plugins: {
-        legend: { position: 'bottom' }
+        legend: {
+          position: 'bottom',
+          labels: { color: '#b8bdc7' }
+        }
       }
     }
   });
