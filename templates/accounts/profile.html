@@ -1,6 +1,111 @@
-<h2>Welcome, {{ profile.user.username }}</h2>
-<p>Email: {{ profile.user.email }}</p>
-<p>Company: {{ profile.company_name }}</p>
-<p>Role: {{ profile.role }}</p>
+{% extends 'base.html' %}
+{% block title %}Profile | AML Compliance{% endblock %}
 
-<a href="{% url 'logout' %}">Logout</a>
+{% block content %}
+<style>
+  main {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 60px 60px;
+    min-height: 100vh;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ✅ المربع الكبير مع التوهج */
+  .profile-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 204, 51, 0.15);
+    border-radius: 18px;
+    width: 420px;
+    min-height: 500px;
+    padding: 50px 35px;
+    text-align: left;
+    color: #e0e3eb;
+    box-shadow: 0 0 35px rgba(255, 204, 51, 0.25); /* ✨ التوهج الذهبي */
+    transition: all 0.3s ease;
+  }
+
+  .profile-card h2 {
+    font-family: "Abhaya Libre", serif;
+    font-weight: 800;
+    color: #ffcc33;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+
+  .info-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 18px;
+    transition: 0.3s ease;
+  }
+
+  .info-box:hover {
+    border-color: rgba(255, 204, 51, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .info-box strong {
+    display: block;
+    color: #ffcc33;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+  }
+
+  .info-box span {
+    font-size: 1rem;
+    color: #d7d9e0;
+  }
+
+  /* ✅ زر اللوق أوت متوسّط تمامًا */
+  .logout-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ffcc33;
+    color: #0b1221;
+    font-weight: 700;
+    padding: 12px 30px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: 0.3s;
+    box-shadow: 0 0 20px rgba(255, 204, 51, 0.25);
+    margin-top: 40px;
+  }
+
+  .logout-btn:hover {
+    background: #ffd84d;
+    box-shadow: 0 0 25px rgba(255, 204, 51, 0.4);
+    transform: translateY(-3px);
+  }
+</style>
+
+<main>
+  <div class="profile-card">
+    <h2>Profile</h2>
+
+    <div class="info-box">
+      <strong>Username</strong>
+      <span>{{ profile.user.username }}</span>
+    </div>
+
+    <div class="info-box">
+      <strong>Email</strong>
+      <span>{{ profile.user.email }}</span>
+    </div>
+
+    <div class="info-box">
+      <strong>Company</strong>
+      <span>{{ profile.company_name }}</span>
+    </div>
+
+    <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+  </div>
+</main>
+{% endblock %}
