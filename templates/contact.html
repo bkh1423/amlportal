@@ -1,0 +1,280 @@
+{% extends 'base.html' %}
+{% block title %}Contact Us{% endblock %}
+
+{% block content %}
+<header>
+  <div class="logo">
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+           width="28" height="28"
+           stroke="#ffcc33" stroke-width="2.6"
+           fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+    <div class="logo-box">H</div>
+    <div class="logo-text">AML</div>
+  </div>
+</header>
+
+<style>
+  /* ===== الهيدر بنفس تنسيق الموقع ===== */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 72px;
+    background: rgba(18,23,42,0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,204,51,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+    padding: 0 50px;
+    z-index: 10;
+  }
+
+  .menu-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 204, 51, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.25s ease;
+  }
+
+  .menu-toggle:hover {
+    background: rgba(255, 204, 51, 0.15);
+    box-shadow: 0 0 20px rgba(255, 204, 51, 0.25);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .logo-box {
+    width: 40px;
+    height: 40px;
+    background: #ffcc33;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #0b1221;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 25px rgba(255,204,51,0.4);
+  }
+
+  .logo-text {
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #ffcc33;
+  }
+
+  /* ===== الخلفية مثل باقي الصفحات ===== */
+  body {
+    background: #12172a;
+    color: #fff;
+    font-family: "Inter", sans-serif;
+    overflow-x: hidden;
+    padding-top: 80px;
+    position: relative;
+  }
+
+  body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255, 204, 51, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 204, 51, 0.05) 1px, transparent 1px);
+    background-size: 70px 70px;
+    z-index: 0;
+  }
+
+  /* ===== تنسيق صفحة التواصل ===== */
+  .contact-container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1000px;
+    margin: auto;
+    gap: 40px;
+  }
+
+  .form-box {
+    flex: 1 1 55%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,204,51,0.15);
+    border-radius: 16px;
+    padding: 35px 40px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.25);
+  }
+
+  .form-box h1 {
+    font-family: "Abhaya Libre", serif;
+    font-weight: 800;
+    color: #ffcc33;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .form-box textarea,
+  .form-box input,
+  .form-box select {
+    width: 100%;
+    margin-top: 15px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,204,51,0.25);
+    color: #fff;
+    font-size: 1rem;
+    padding: 12px 15px;
+    border-radius: 8px;
+    outline: none;
+  }
+
+  /* ✅ إرجاع السهم الصغير الافتراضي */
+  .form-box select {
+    background-color: rgba(255,255,255,0.07);
+    color: #fff;
+    appearance: auto;
+  }
+
+  .form-box select option {
+    background-color: #1a1d2c;
+    color: #fff;
+  }
+
+  .form-box textarea::placeholder {
+    color: #aaa;
+  }
+
+  .form-box button {
+    width: 100%;
+    background: #ffcc33;
+    color: #0b1221;
+    border: none;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 14px 0;
+    font-size: 1.05rem;
+    margin-top: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .form-box button:hover {
+    background: #ffd84d;
+    box-shadow: 0 0 20px rgba(255,204,51,0.35);
+  }
+
+  .locations {
+    flex: 1 1 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .location-box {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,204,51,0.2);
+    border-radius: 12px;
+    padding: 20px;
+    line-height: 1.6;
+  }
+
+  .location-box strong {
+    color: #ffcc33;
+    font-size: 1.05rem;
+  }
+
+  .location-box p {
+    margin: 5px 0;
+    color: #ddd;
+  }
+
+  .email {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  .email a {
+    color: #ffcc33;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .email a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 850px) {
+    .contact-container { flex-direction: column; }
+  }
+</style>
+
+<div class="contact-container">
+  <div class="form-box">
+    <h1>Request More Details</h1>
+    <form method="post">
+      {% csrf_token %}
+      <input type="text" name="name" placeholder="Full Name">
+      <input type="text" name="business_name" placeholder="Business Name">
+      <input type="email" name="email" placeholder="Business eMail">
+      <select name="service">
+        <option>AML Screening</option>
+        <option>Transaction Monitoring</option>
+        <option>(eKYC) Identity Verification</option>
+        <option>KYB (Know Your Business)</option>
+      </select>
+      <textarea name="message" rows="5" placeholder="Type Your Message / Enquiry"></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </div>
+
+  <div class="locations">
+    <div class="location-box">
+      <strong>United States</strong>
+      <p>Suite 302, 4001 Kennett Pike,<br> County of New Castle, Wilmington, Delaware</p>
+    </div>
+    <div class="location-box">
+      <strong>United Arab Emirates</strong>
+      <p>Level 6, Building 4, DIFC, Dubai</p>
+    </div>
+    <div class="location-box">
+      <strong>Saudi Arabia</strong>
+      <p>King Abdullah Ibn Abdulaziz Saud Branch,<br> Al Raed District, Riyadh</p>
+    </div>
+    <div class="location-box">
+      <strong>Bahrain</strong>
+      <p>Level 3, Seef Central Tower, Seef District</p>
+    </div>
+    <div class="email">
+      <a href="mailto:sales@faceki.com">sales@faceki.com</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  const menuToggle = document.getElementById("menuToggle");
+  const sidebar = document.getElementById("sidebar");
+
+  if (menuToggle) {
+    menuToggle.addEventListener("click", () => {
+      if (sidebar) sidebar.classList.toggle("show");
+    });
+  }
+</script>
+{% endblock %}

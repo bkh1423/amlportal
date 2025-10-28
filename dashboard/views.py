@@ -39,3 +39,8 @@ def dashboard_home(request):
     }
 
     return render(request, 'dashboard/home.html', context)
+
+
+def contact_view(request):
+    """صفحة التواصل"""
+    return render(request, 'contact.html')

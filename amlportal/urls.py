@@ -20,5 +20,8 @@ urlpatterns = [
 
     # ✅ لوحة القيادة (Dashboard)
     path('dashboard/', include('dashboard.urls')),
+
+    # ✅ صفحة التواصل (Contact Us)
+    path('contact/', lambda request: render(request, 'contact.html'), name='contact'),
 ]
 
