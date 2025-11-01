@@ -26,10 +26,11 @@ class BusinessTypeAdmin(admin.ModelAdmin):
 @admin.register(Section)
 class SectionAdmin(admin.ModelAdmin):
     """إدارة الأقسام لكل نوع نشاط"""
-    list_display = ('name', 'business_type')
+    list_display = ('name', 'business_type', 'order')  # ✅ عرض ترتيب القسم
+    list_editable = ('order',)  # ✅ تعديل الترتيب من نفس الجدول مباشرة
     list_filter = ('business_type',)
     search_fields = ('name', 'business_type__name')
-    # ✅ بدون Inline للأسئلة (الخيار الثاني اللي اخترتيه)
+    ordering = ('business_type', 'order')  # ✅ ترتيب العرض داخل اللوحة
 
 
 @admin.register(Question)

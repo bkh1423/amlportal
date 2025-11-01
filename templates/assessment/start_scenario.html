@@ -1,15 +1,62 @@
 {% extends 'base.html' %}
-{% block title %}{{ scenario.title }} - Start{% endblock %}
+{% block title %}Start Scenario{% endblock %}
 {% block content %}
-<div style="max-width:800px; margin:60px auto; text-align:center;">
-  <h2 style="color:#1ed6a1;">{{ scenario.title }}</h2>
-  <p style="color:#b8bdc7;">{{ scenario.output_summary|default:"No description available." }}</p>
-  <hr style="border-color:rgba(255,255,255,0.1);" />
-  <p>⚙️ Risk Level: <strong style="color:#1ed6a1;">{{ scenario.risk_level|title }}</strong></p>
-  <p>📁 Type: <strong style="color:#1ed6a1;">{{ scenario.output_type }}</strong></p>
-  <p>🧩 Recommended Services:</p>
-  <p style="color:#b8bdc7;">{{ scenario.recommended_services }}</p>
 
-  <a href="/assessment/" style="display:inline-block; margin-top:30px; color:#1ed6a1;">← Back to Scenarios</a>
+<style>
+  body {
+    background-color: #0b0e17;
+    color: #fff;
+    font-family: "Inter", sans-serif;
+    text-align: center;
+  }
+  .scenario-container {
+    max-width: 850px;
+    margin: 120px auto;
+    padding: 40px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 16px;
+    border: 1px solid rgba(255,204,51,0.15);
+    box-shadow: 0 0 30px rgba(0,0,0,0.3);
+  }
+  h1 {
+    color: #ffcc33;
+    font-family: "Abhaya Libre", serif;
+    margin-bottom: 20px;
+  }
+  p {
+    color: #bfbfbf;
+    line-height: 1.6;
+    margin-bottom: 15px;
+  }
+  .btn {
+    display: inline-block;
+    margin-top: 25px;
+    background: #ffcc33;
+    color: #161d33;
+    padding: 12px 28px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+  }
+  .btn:hover {
+    background: #ffd84d;
+  }
+</style>
+
+<div class="scenario-container">
+  <h1>{{ scenario.title }}</h1>
+  <p><strong>Risk Level:</strong> {{ scenario.get_risk_level_display }}</p>
+
+  {% if scenario.output_summary %}
+    <p><strong>Summary:</strong> {{ scenario.output_summary }}</p>
+  {% endif %}
+
+  {% if scenario.recommended_services %}
+    <p><strong>Recommended Services:</strong> {{ scenario.recommended_services }}</p>
+  {% endif %}
+
+  <a href="{% url 'assessment_sections' %}" class="btn">Start Assessment</a>
 </div>
+
 {% endblock %}

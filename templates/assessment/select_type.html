@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}Select Business Type{% endblock %}
+{% block content %}
+
+<style>
+  body {
+    position: relative;
+  }
+
+  .select-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    background: rgba(22, 29, 51, 0.65);
+    color: #fff;
+    position: relative;
+    padding: 80px 20px;
+  }
+
+  h1 {
+    color: #ffcc33;
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+  }
+
+  form {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 0 30px rgba(255, 204, 51, 0.1);
+    width: 400px;
+    max-width: 90%;
+  }
+
+  select {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    margin-bottom: 25px;
+  }
+
+  .submit-btn {
+    padding: 12px 40px;
+    background-color: #ffcc33;
+    color: #161d33;
+    font-weight: 700;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  .submit-btn:hover {
+    background-color: #ffd84d;
+    box-shadow: 0 0 25px rgba(255, 204, 51, 0.3);
+  }
+</style>
+
+<div class="select-wrapper">
+  <h1>Select Your Business Type</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    <select name="business_type" required>
+      <option value="" disabled selected>-- Choose a Business Type --</option>
+      {% for bt in business_types %}
+        <option value="{{ bt.id }}">{{ bt.name }}</option>
+      {% endfor %}
+    </select>
+
+    <button type="submit" class="submit-btn">Continue</button>
+  </form>
+</div>
+
+{% endblock %}
+

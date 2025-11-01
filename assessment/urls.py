@@ -2,15 +2,10 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # صفحة الأقسام التعريفية (قبل البدء في التقييم)
     path('sections/', views.assessment_sections, name='assessment_sections'),
-
-    # الصفحة الرئيسية للتقييمات (السيناريوهات)
-    path('', views.scenarios_view, name='assessment_home'),
-
-    # صفحة السيناريوهات المقسمة (Business / Compliance / Risk)
-    path('scenarios/', views.scenarios_view, name='scenarios'),
-
-    # صفحة عرض التفاصيل لكل سيناريو
-    path('start/<int:scenario_id>/', views.start_scenario, name='start_scenario'),
+    path('start/', views.assessment_start, name='assessment_start'),  # ✅ تمت إضافته
+    path('select-type/', views.assessment_select_type, name='assessment_select_type'),
+    path('business/<int:business_type_id>/section/<int:section_id>/', views.section_questions_view, name='section_questions'),
+    path('result/<int:scenario_id>/', views.scenario_result_view, name='scenario_result'),
 ]
+

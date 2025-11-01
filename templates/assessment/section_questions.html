@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block title %}{{ section.name }} - Questions{% endblock %}
+{% block content %}
+
+<style>
+  body {
+    background: #0b0f1a;
+    font-family: "Inter", sans-serif;
+  }
+
+  .question-container {
+    text-align: center;
+    padding: 80px 20px;
+    color: #fff;
+  }
+
+  .question-container h1 {
+    color: #ffcc33;
+    font-family: "Abhaya Libre", serif;
+    margin-bottom: 25px;
+    font-size: 2.2rem;
+  }
+
+  .question-box {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,204,51,0.15);
+    border-radius: 15px;
+    padding: 25px;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 800px;
+    text-align: left;
+    transition: all 0.3s ease;
+  }
+
+  .question-box:hover {
+    background: rgba(255,255,255,0.08);
+    box-shadow: 0 0 20px rgba(255,204,51,0.05);
+  }
+
+  .question-text {
+    color: #ffcc33;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+
+  .choice {
+    display: block;
+    margin: 8px 0;
+    color: #ddd;
+  }
+
+  .choice input[type="radio"] {
+    margin-right: 8px;
+    accent-color: #ffcc33;
+  }
+
+  .next-btn {
+    display: inline-block;
+    margin-top: 35px;
+    padding: 14px 40px;
+    border-radius: 30px;
+    background-color: #ffcc33;
+    color: #161d33;
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: 0.3s;
+  }
+
+  .next-btn:hover {
+    background-color: #ffd84d;
+    box-shadow: 0 0 25px rgba(255, 204, 51, 0.25);
+    transform: scale(1.03);
+  }
+
+  .section-info {
+    font-size: 1rem;
+    color: #a0a0a0;
+    margin-bottom: 20px;
+  }
+
+</style>
+
+<div class="question-container">
+  <h1>{{ section.name }}</h1>
+  <p class="section-info">
+    Part of {{ business_type.name }} Assessment
+  </p>
+
+  <form method="POST">
+    {% csrf_token %}
+    
+    {% for q in questions %}
+    <div class="question-box">
+      <div class="question-text">{{ q.text }}</div>
+      {% for c in q.choices.all %}
+      <label class="choice">
+        <input type="radio" name="q{{ q.id }}" value="{{ c.id }}"> {{ c.text }}
+      </label>
+      {% endfor %}
+    </div>
+    {% endfor %}
+
+    <!-- ✅ الزر يتغير تلقائي -->
+    <button type="submit" class="next-btn">
+      {% if next_section %}
+        Next Section →
+      {% else %}
+        Finish Assessment
+      {% endif %}
+    </button>
+  </form>
+</div>
+
+{% endblock %}

@@ -15,7 +15,7 @@ urlpatterns = [
 
     # 🔸 روابط التطبيقات الثلاثة
     path('accounts/', include('accounts.urls')),     # تسجيل الدخول / المستخدمين
-    path('assessment/', include('assessment.urls')), # صفحات الأسئلة والسيناريوهات
+    path('assessment/', include('assessment.urls')), # ✅ صفحات الأسئلة والسيناريوهات (جديد)
     path('results/', include('results.urls')),       # نتائج التقييمات
 
     # ✅ لوحة القيادة (Dashboard)
@@ -24,4 +24,3 @@ urlpatterns = [
     # ✅ صفحة التواصل (Contact Us)
     path('contact/', lambda request: render(request, 'contact.html'), name='contact'),
 ]
-
