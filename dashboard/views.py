@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.db.models import Count
-from assessment.models import BusinessType, Section, ScenarioResult
+from assessment.models import BusinessType, Section 
 
 
 def dashboard_home(request):

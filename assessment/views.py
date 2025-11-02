@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import ScenarioResult, BusinessType, Section, Question, Choice, UserAnswer
+from .models import  BusinessType, Section, Question, Choice, UserAnswer
 from django.contrib.auth.decorators import login_required
 
 
@@ -81,6 +81,6 @@ def section_questions_view(request, business_type_id, section_id):
 
 
 # 🔵 عرض النتيجة
-def scenario_result_view(request, scenario_id):
-    scenario = get_object_or_404(ScenarioResult, id=scenario_id)
-    return render(request, 'assessment/scenario_result.html', {'scenario': scenario})
+#def scenario_result_view(request, scenario_id):
+    #scenario = get_object_or_404(ScenarioResult, id=scenario_id)
+    #return render(request, 'assessment/scenario_result.html', {'scenario': scenario})

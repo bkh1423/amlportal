@@ -3,30 +3,49 @@
 {% block content %}
 
 <style>
-  body { background: #0a0c15; color: #fff; text-align: center; }
+  body {
+    background: #0a0c15;
+    color: #fff;
+    font-family: "Inter", sans-serif;
+  }
+
   .result-container {
-    max-width: 800px;
-    margin: 100px auto;
+    max-width: 900px;
+    margin: 80px auto;
     background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,204,51,0.2);
-    border-radius: 15px;
+    border-radius: 16px;
     padding: 40px;
     box-shadow: 0 0 40px rgba(0,0,0,0.4);
   }
-  h1 {
+
+  h1, h2 {
     color: #ffcc33;
     font-family: "Abhaya Libre", serif;
-    margin-bottom: 20px;
   }
-  .risk {
-    font-size: 1.4rem;
-    font-weight: bold;
-    margin-bottom: 20px;
+
+  p {
+    color: #ccc;
+    line-height: 1.7;
+    margin-bottom: 15px;
   }
-  .risk.low { color: #4CAF50; }
-  .risk.medium { color: #FFC107; }
-  .risk.high { color: #F44336; }
-  p { color: #ccc; line-height: 1.7; margin-bottom: 10px; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+  }
+
+  th, td {
+    padding: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  th {
+    background: rgba(255,204,51,0.1);
+    color: #ffcc33;
+  }
+
   .btn {
     display: inline-block;
     margin-top: 25px;
@@ -37,27 +56,47 @@
     font-weight: 600;
     text-decoration: none;
   }
-  .btn:hover { background: #ffd84d; }
+
+  .btn:hover {
+    background: #ffd84d;
+  }
 </style>
 
 <div class="result-container">
   <h1>{{ scenario.title }}</h1>
-  <div class="risk {{ scenario.risk_level }}">
-    Risk Level: {{ scenario.get_risk_level_display }}
-  </div>
-  {% if scenario.recommended_services %}
-    <p><strong>Recommended Services:</strong> {{ scenario.recommended_services }}</p>
-  {% endif %}
-  {% if scenario.sanctions_list_activation %}
-    <p><strong>Sanctions List:</strong> {{ scenario.sanctions_list_activation }}</p>
-  {% endif %}
-  {% if scenario.monitoring_frequency %}
-    <p><strong>Monitoring Frequency:</strong> {{ scenario.monitoring_frequency }}</p>
-  {% endif %}
-  {% if scenario.output_summary %}
-    <p><strong>Summary:</strong> {{ scenario.output_summary }}</p>
-  {% endif %}
-  <a href="{% url 'assessment_home' %}" class="btn">Back to Home</a>
+  <h2>Risk Level: {{ scenario.get_risk_level_display }}</h2>
+
+  <p><strong>Summary:</strong> {{ scenario.output_summary }}</p>
+
+  <h3>Recommended Services</h3>
+  <p>{{ scenario.recommended_services }}</p>
+
+  <h3>Sanctions List Activation</h3>
+  <p>{{ scenario.sanctions_list_activation }}</p>
+
+  <h3>Monitoring Frequency</h3>
+  <p>{{ scenario.monitoring_frequency }}</p>
+
+  <h3>Tags</h3>
+  <p>{{ scenario.tags }}</p>
+
+  <h3>Activated Scenarios / Rules</h3>
+  <table>
+    <tr>
+      <th>Scenario Name</th>
+      <th>Description</th>
+    </tr>
+    {% for s in scenario.scenarios.all %}
+    <tr>
+      <td>{{ s.name }}</td>
+      <td>{{ s.description }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="2">No active scenarios found</td></tr>
+    {% endfor %}
+  </table>
+
+  <a href="{% url 'assessment_sections' %}" class="btn">Back to Assessment</a>
 </div>
 
 {% endblock %}
