@@ -5,25 +5,19 @@ from assessment.models import BusinessType, Section
 
 
 def dashboard_home(request):
-    """لوحة التحكم الرئيسية لعرض الإحصائيات"""
 
-    # 👥 عدد المستخدمين
     users_count = User.objects.count()
 
-    # 🧾 عدد التقييمات
     completed_evaluations = ScenarioResult.objects.count()
 
-    # 📚 عدد الأقسام
     sections_count = Section.objects.count()
 
-    # 📊 عدد التقييمات لكل نوع نشاط (Business Type)
     sections_data = (
         BusinessType.objects
         .annotate(result_count=Count('results'))
         .values('name', 'result_count')
     )
 
-    # 🧩 توزيع التقييمات حسب مستوى الخطورة
     high_risk = ScenarioResult.objects.filter(risk_level='high').count()
     medium_risk = ScenarioResult.objects.filter(risk_level='medium').count()
     low_risk = ScenarioResult.objects.filter(risk_level='low').count()
