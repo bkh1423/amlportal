@@ -7,5 +7,7 @@ urlpatterns = [
     path('select-type/', views.assessment_select_type, name='assessment_select_type'),
     path('business/<int:business_type_id>/section/<int:section_id>/', views.section_questions_view, name='section_questions'),
     #path('result/<int:scenario_id>/', views.scenario_result_view, name='scenario_result'),
+    path('calculate-result/', views.calculate_result_view, name='calculate_result'),
+
 ]
 

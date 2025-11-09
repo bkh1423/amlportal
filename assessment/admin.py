@@ -39,3 +39,10 @@ class QuestionAdmin(admin.ModelAdmin):
 class UserAnswerAdmin(admin.ModelAdmin):
     list_display = ('user', 'question', 'choice', 'submitted_at')
     list_filter = ('user', 'submitted_at')
+from .models import ChoiceRule
+
+@admin.register(ChoiceRule)
+class ChoiceRuleAdmin(admin.ModelAdmin):
+    """إدارة الربط بين الاختيارات والنتائج"""
+    list_display = ('choice', 'scenario_result', 'condition_note')
+    search_fields = ('choice__text', 'scenario_result__title', 'condition_note')

@@ -54,3 +54,17 @@ class UserAnswer(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.question.text[:50]}"
+
+
+# ✅ 6. جدول ربط الاختيارات بنتائج التقييم (ChoiceRule)
+class ChoiceRule(models.Model):
+    choice = models.ForeignKey(Choice, on_delete=models.CASCADE, related_name='rules')
+    scenario_result = models.ForeignKey(
+        'results.AssessmentResult',  # 🔹 تم التعديل هنا فقط
+        on_delete=models.CASCADE,
+        related_name='choice_rules'
+    )
+    condition_note = models.CharField(max_length=255, blank=True, null=True, help_text="سبب الربط (اختياري)")
+
+    def __str__(self):
+        return f"{self.choice.text} → {self.scenario_result}"

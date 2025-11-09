@@ -84,3 +84,31 @@ def section_questions_view(request, business_type_id, section_id):
 #def scenario_result_view(request, scenario_id):
     #scenario = get_object_or_404(ScenarioResult, id=scenario_id)
     #return render(request, 'assessment/scenario_result.html', {'scenario': scenario})
+
+# ==============================================
+# 🧠 حساب النتيجة التلقائية من إجابات المستخدم
+# ==============================================
+from results.models import AssessmentResult
+from .models import UserAnswer, ChoiceRule
+
+def calculate_result_view(request):
+    """تحليل إجابات المستخدم وتحديد النتيجة الأنسب"""
+    user = request.user
+    user_answers = UserAnswer.objects.filter(user=user)
+
+    matched_results = []
+
+    for answer in user_answers:
+        choice = answer.choice
+        rule = ChoiceRule.objects.filter(choice=choice).first()
+        if rule:
+            matched_results.append(rule.scenario_result)
+
+    if not matched_results:
+        return render(request, 'results/no_result.html', {"message": "No matching result found."})
+
+    # ✅ اختيار النتيجة الأعلى حسب مستوى الخطورة
+    priority = {"High": 3, "Medium": 2, "Low": 1}
+    final_result = max(matched_results, key=lambda r: priority.get(r.risk_level, 0))
+
+    return render(request, 'results/final_result.html', {"result": final_result})
