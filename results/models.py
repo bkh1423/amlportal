@@ -26,4 +26,5 @@ class AssessmentResult(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Result for {self.user.username if self.user else 'No User'} ({self.risk_level})"
+        business_name = self.business_type.name if self.business_type else "No Business"
+        return f"{business_name} - {self.risk_level} Risk"

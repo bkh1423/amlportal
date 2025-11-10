@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import  BusinessType, Section, Question, Choice, UserAnswer
+from .models import BusinessType, Section, Question, Choice, UserAnswer
 from django.contrib.auth.decorators import login_required
+from results.models import AssessmentResult
+from .models import ChoiceRule
 
 
 # 🟢 صفحة البداية (Start Assessment)
@@ -15,7 +17,6 @@ def assessment_start(request):
 def assessment_sections(request):
     business_types = BusinessType.objects.all()
 
-    # إذا ضغط المستخدم "Start" يروح يختار نوع العمل
     if request.method == "POST":
         return redirect('assessment_select_type')
 
@@ -30,8 +31,6 @@ def assessment_select_type(request):
     if request.method == 'POST':
         selected_type = request.POST.get('business_type')
         business_type = get_object_or_404(BusinessType, id=selected_type)
-
-        # ✅ أول قسم بناءً على ترتيب order
         first_section = Section.objects.filter(business_type=business_type).order_by('order').first()
         if first_section:
             return redirect('section_questions', business_type_id=business_type.id, section_id=first_section.id)
@@ -46,7 +45,6 @@ def section_questions_view(request, business_type_id, section_id):
     section = get_object_or_404(Section, id=section_id, business_type=business_type)
     questions = section.questions.prefetch_related('choices').all().order_by('id')
 
-    # ✅ القسم التالي بالترتيب الصحيح
     next_section = Section.objects.filter(
         business_type=business_type,
         order__gt=section.order
@@ -63,14 +61,11 @@ def section_questions_view(request, business_type_id, section_id):
                     defaults={'choice': choice}
                 )
 
-        # ✅ الانتقال للقسم التالي أو عرض النتيجة
         if next_section:
             return redirect('section_questions', business_type_id=business_type.id, section_id=next_section.id)
         else:
-            scenario_result = ScenarioResult.objects.filter(business_type=business_type).first()
-            if scenario_result:
-                return redirect('scenario_result', scenario_id=scenario_result.id)
-            return redirect('assessment_sections')
+            # ✅ الانتقال لصفحة النتيجة بعد آخر قسم
+            return redirect('calculate_result')
 
     return render(request, 'assessment/section_questions.html', {
         'business_type': business_type,
@@ -80,17 +75,10 @@ def section_questions_view(request, business_type_id, section_id):
     })
 
 
-# 🔵 عرض النتيجة
-#def scenario_result_view(request, scenario_id):
-    #scenario = get_object_or_404(ScenarioResult, id=scenario_id)
-    #return render(request, 'assessment/scenario_result.html', {'scenario': scenario})
-
 # ==============================================
 # 🧠 حساب النتيجة التلقائية من إجابات المستخدم
 # ==============================================
-from results.models import AssessmentResult
-from .models import UserAnswer, ChoiceRule
-
+@login_required
 def calculate_result_view(request):
     """تحليل إجابات المستخدم وتحديد النتيجة الأنسب"""
     user = request.user
@@ -111,4 +99,5 @@ def calculate_result_view(request):
     priority = {"High": 3, "Medium": 2, "Low": 1}
     final_result = max(matched_results, key=lambda r: priority.get(r.risk_level, 0))
 
-    return render(request, 'results/final_result.html', {"result": final_result})
+    # ✅ عرض صفحة النتيجة الجاهزة
+    return render(request, 'assessment/scenario_result.html', {"result": final_result})

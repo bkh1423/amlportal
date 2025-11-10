@@ -1,102 +1,108 @@
 {% extends 'base.html' %}
-{% block title %}Final Result{% endblock %}
 {% block content %}
 
 <style>
-  body {
-    background: #0a0c15;
+  .result-container {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
     color: #fff;
     font-family: "Inter", sans-serif;
   }
 
-  .result-container {
-    max-width: 900px;
-    margin: 80px auto;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,204,51,0.2);
-    border-radius: 16px;
-    padding: 40px;
-    box-shadow: 0 0 40px rgba(0,0,0,0.4);
-  }
-
-  h1, h2 {
-    color: #ffcc33;
-    font-family: "Abhaya Libre", serif;
-  }
-
-  p {
-    color: #ccc;
-    line-height: 1.7;
-    margin-bottom: 15px;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 25px;
-  }
-
-  th, td {
-    padding: 10px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-  }
-
-  th {
-    background: rgba(255,204,51,0.1);
-    color: #ffcc33;
-  }
-
-  .btn {
-    display: inline-block;
-    margin-top: 25px;
-    background: #ffcc33;
-    padding: 10px 25px;
-    border-radius: 25px;
-    color: #161d33;
+  h2 {
+    text-align: center;
+    font-size: 28px;
     font-weight: 600;
-    text-decoration: none;
+    color: #00d8ff;
+    margin-bottom: 25px;
   }
 
-  .btn:hover {
-    background: #ffd84d;
+  .risk-level {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    margin: 20px 0;
+  }
+
+  .risk-high { color: #ff3b3b; }
+  .risk-medium { color: #ffaa33; }
+  .risk-low { color: #00ff88; }
+
+  .info-section {
+    margin-top: 25px;
+    background: rgba(255,255,255,0.08);
+    padding: 20px;
+    border-radius: 10px;
+  }
+
+  .info-section h3 {
+    color: #00c3ff;
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .info-section pre {
+    background: rgba(255,255,255,0.05);
+    padding: 15px;
+    border-radius: 8px;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    font-family: monospace;
+  }
+
+  .btn-home {
+    display: block;
+    width: fit-content;
+    margin: 30px auto 0;
+    padding: 12px 25px;
+    background: #00c3ff;
+    color: #000;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+  }
+
+  .btn-home:hover {
+    background: #00ff99;
   }
 </style>
 
 <div class="result-container">
-  <h1>{{ scenario.title }}</h1>
-  <h2>Risk Level: {{ scenario.get_risk_level_display }}</h2>
+  <h2>Final Assessment Result</h2>
 
-  <p><strong>Summary:</strong> {{ scenario.output_summary }}</p>
+  {% if result %}
+    <p><strong>Business Type:</strong> {{ result.business_type.name }}</p>
+    <p class="risk-level {% if result.risk_level == 'High' %}risk-high{% elif result.risk_level == 'Medium' %}risk-medium{% else %}risk-low{% endif %}">
+      Risk Level: {{ result.risk_level }}
+    </p>
 
-  <h3>Recommended Services</h3>
-  <p>{{ scenario.recommended_services }}</p>
+    <div class="info-section">
+      <h3>Monitoring Frequency</h3>
+      <p>{{ result.monitoring_frequency }}</p>
+    </div>
 
-  <h3>Sanctions List Activation</h3>
-  <p>{{ scenario.sanctions_list_activation }}</p>
+    <div class="info-section">
+      <h3>Recommended Services</h3>
+      <pre>{{ result.recommended_services }}</pre>
+    </div>
 
-  <h3>Monitoring Frequency</h3>
-  <p>{{ scenario.monitoring_frequency }}</p>
+    {% if result.rules %}
+    <div class="info-section">
+      <h3>Activated Rules</h3>
+      <pre>{{ result.rules }}</pre>
+    </div>
+    {% endif %}
 
-  <h3>Tags</h3>
-  <p>{{ scenario.tags }}</p>
+  {% else %}
+    <p style="text-align:center;">No result found.</p>
+  {% endif %}
 
-  <h3>Activated Scenarios / Rules</h3>
-  <table>
-    <tr>
-      <th>Scenario Name</th>
-      <th>Description</th>
-    </tr>
-    {% for s in scenario.scenarios.all %}
-    <tr>
-      <td>{{ s.name }}</td>
-      <td>{{ s.description }}</td>
-    </tr>
-    {% empty %}
-    <tr><td colspan="2">No active scenarios found</td></tr>
-    {% endfor %}
-  </table>
-
-  <a href="{% url 'assessment_sections' %}" class="btn">Back to Assessment</a>
+  <a href="{% url 'assessment_sections' %}" class="btn-home">Back to Assessment</a>
 </div>
 
 {% endblock %}
