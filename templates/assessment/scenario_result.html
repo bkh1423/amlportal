@@ -2,107 +2,218 @@
 {% block content %}
 
 <style>
-  .result-container {
-    max-width: 900px;
-    margin: 60px auto;
-    padding: 40px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.3);
-    color: #fff;
+  body {
     font-family: "Inter", sans-serif;
+    background: radial-gradient(circle at top right, #161d33, #161d33 70%);
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
   }
 
-  h2 {
-    text-align: center;
-    font-size: 28px;
-    font-weight: 600;
-    color: #00d8ff;
-    margin-bottom: 25px;
+  .container-result {
+    max-width: 950px;
+    margin: 80px auto;
+    padding: 40px;
+    text-align: left;
   }
 
-  .risk-level {
-    text-align: center;
-    font-size: 22px;
+  /* 💠 العنوان */
+  .page-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #ffb347;
+    margin-bottom: 40px;
+  }
+
+  /* 💠 شعار Smart Compliance */
+  .title-box {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(58, 75, 138, 0.4));
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 1.5rem;
+    padding: 1rem 2rem;
+    display: inline-block;
+    margin-bottom: 30px;
+  }
+
+  .title-box h1 {
+    color: #ffb347;
+    font-size: 1.8rem;
     font-weight: 700;
-    margin: 20px 0;
   }
 
-  .risk-high { color: #ff3b3b; }
-  .risk-medium { color: #ffaa33; }
-  .risk-low { color: #00ff88; }
-
-  .info-section {
-    margin-top: 25px;
-    background: rgba(255,255,255,0.08);
-    padding: 20px;
-    border-radius: 10px;
+  /* 💠 البوكسات الجديدة */
+  .box {
+    position: relative;
+    background: rgba(40, 60, 110, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 1.2rem;
+    padding: 1.8rem;
+    margin-bottom: 25px;
+    text-align: left;
+    overflow: hidden;
+    transition: all 0.8s ease;
   }
 
-  .info-section h3 {
-    color: #00c3ff;
-    font-size: 20px;
-    margin-bottom: 10px;
+  .box::before {
+    content: "";
+    position: absolute;
+    top: -60px;
+    left: -60px;
+    width: 120px;
+    height: 120px;
+    background: rgba(255, 179, 71, 0.05);
+    border-radius: 50%;
+    box-shadow: 0 0 50px rgba(255, 179, 71, 0.2);
+    transition: all 1s ease;
   }
 
-  .info-section pre {
-    background: rgba(255,255,255,0.05);
-    padding: 15px;
-    border-radius: 8px;
-    overflow-x: auto;
+  .box:hover::before {
+    top: -20px;
+    left: -20px;
+    box-shadow: 0 0 80px rgba(255, 179, 71, 0.35);
+  }
+
+  .box:hover {
+    transform: translateY(-4px);
+    background: rgba(50, 70, 120, 0.35);
+  }
+
+  .box h3 {
+    color: #ffb347;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+  }
+
+  .box p,
+  .box pre {
+    color: #f3f4f6;
+    font-size: 1rem;
+    line-height: 1.6;
     white-space: pre-wrap;
-    font-family: monospace;
   }
 
+  .highlight {
+    color: #ffb347;
+    font-weight: 700;
+  }
+
+  /* 💠 رسم مستوى الخطورة */
+  .risk-meter {
+    margin: 25px 0;
+    text-align: center;
+  }
+
+  .risk-bar {
+    height: 16px;
+    border-radius: 10px;
+    background: linear-gradient(to right, #00ff99, #ffeb3b, #ff4d4d);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .risk-pointer {
+    width: 14px;
+    height: 14px;
+    background: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 1px;
+    transition: all 0.5s ease;
+  }
+
+  .risk-text {
+    margin-left: 10px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .risk-low {
+    color: #ffffff;
+  }
+
+  .risk-medium {
+    color: #ffffff;
+  }
+
+  .risk-high {
+    color: #ffffff;
+  }
+
+  /* 💠 زر العودة */
   .btn-home {
-    display: block;
-    width: fit-content;
-    margin: 30px auto 0;
-    padding: 12px 25px;
-    background: #00c3ff;
+    display: inline-block;
+    margin-top: 35px;
+    padding: 12px 28px;
+    background:  #ffcc33;
     color: #000;
-    border-radius: 8px;
+    border-radius: 10px;
     text-decoration: none;
     font-weight: 600;
-    transition: 0.3s;
+    transition: all 0.3s ease;
   }
 
   .btn-home:hover {
-    background: #00ff99;
+    background: #ffcc33;
+    transform: scale(1.05);
   }
 </style>
 
-<div class="result-container">
-  <h2>Final Assessment Result</h2>
+<div class="container-result">
+
+  <div class="title-box">
+    <h1>Assessment Result</h1>
+  </div>
 
   {% if result %}
-    <p><strong>Business Type:</strong> {{ result.business_type.name }}</p>
-    <p class="risk-level {% if result.risk_level == 'High' %}risk-high{% elif result.risk_level == 'Medium' %}risk-medium{% else %}risk-low{% endif %}">
-      Risk Level: {{ result.risk_level }}
-    </p>
 
-    <div class="info-section">
-      <h3>Monitoring Frequency</h3>
-      <p>{{ result.monitoring_frequency }}</p>
+  <div class="box">
+    <h3>Business Type</h3>
+    <p class="highlight">{{ result.business_type.name }}</p>
+  </div>
+
+  <div class="box">
+    <div style="display:flex; align-items:center; gap:1-px;">
+  <h3 style="margin:0;">Risk Level:</h3>
+  <div class="risk-text {% if result.risk_level == 'High' %}risk-high
+  {% elif result.risk_level == 'Medium' %}risk-medium
+  {% else %}risk-low{% endif %}">
+    {{ result.risk_level }}
+  </div>
+</div>
+
+
+    <div class="risk-meter">
+      <div class="risk-bar">
+        <div class="risk-pointer" style="left: {{ pointer_pos }};"></div>
+      </div>
     </div>
+  </div>
 
-    <div class="info-section">
-      <h3>Recommended Services</h3>
-      <pre>{{ result.recommended_services }}</pre>
-    </div>
+  <div class="box">
+    <h3>Monitoring Frequency</h3>
+    <p>{{ result.monitoring_frequency }}</p>
+  </div>
 
-    {% if result.rules %}
-    <div class="info-section">
-      <h3>Activated Rules</h3>
-      <pre>{{ result.rules }}</pre>
-    </div>
-    {% endif %}
+  <div class="box">
+    <h3>Recommended Services</h3>
+    <pre>{{ result.recommended_services }}</pre>
+  </div>
 
-  {% else %}
-    <p style="text-align:center;">No result found.</p>
+  {% if result.rules %}
+  <div class="box">
+    <h3>Activated Rules</h3>
+    <pre>{{ result.rules }}</pre>
+  </div>
   {% endif %}
 
-  <a href="{% url 'assessment_sections' %}" class="btn-home">Back to Assessment</a>
+  {% else %}
+  <p>No result found.</p>
+  {% endif %}
+
+<a href="{% url 'home' %}" class="btn-home">Back to Home</a>
 </div>
 
 {% endblock %}

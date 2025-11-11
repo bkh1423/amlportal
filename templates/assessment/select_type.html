@@ -2,9 +2,17 @@
 {% block title %}Select Business Type{% endblock %}
 {% block content %}
 
+<!-- ✅ إضافة رابط الخط من Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@600;700;800&display=swap" rel="stylesheet">
+
 <style>
   body {
     position: relative;
+    font-family: "Abhaya Libre", serif; /* ✨ الخط الجديد */
+    background: radial-gradient(circle at top right, #161d33, #161d33 70%);
+    color: #fff;
+    margin: 0;
+    padding: 0;
   }
 
   .select-wrapper {
@@ -18,13 +26,29 @@
     color: #fff;
     position: relative;
     padding: 80px 20px;
+    transform: translateY(-80px);
   }
 
-  h1 {
-    color: #ffcc33;
-    font-size: 2.4rem;
-    font-weight: 700;
-    margin-bottom: 30px;
+  /* 💠 البوكس الذهبي حول العنوان */
+  .title-box {
+    background: rgba(22, 29, 51, 0.5);
+    border: 1px solid rgba(255, 204, 51, 0.25);
+    box-shadow: 0 0 40px rgba(255, 204, 51, 0.08);
+    border-radius: 16px;
+    padding: 20px 50px;
+    margin-bottom: 40px;
+    transition: 0.4s;
+  }
+
+  .title-box:hover {
+    box-shadow: 0 0 50px rgba(255, 204, 51, 0.15);
+  }
+
+  .title-box h1 {
+    color: #f7981d;
+    font-size: 2.6rem;
+    font-weight: 800; /* أكثر سماكة */
+    margin: 0;
   }
 
   form {
@@ -32,39 +56,69 @@
     padding: 40px;
     border-radius: 16px;
     box-shadow: 0 0 30px rgba(255, 204, 51, 0.1);
-    width: 400px;
-    max-width: 90%;
+    width: 420px;
+    max-width: 100%;
+    text-align: left;
   }
 
   select {
     width: 100%;
     padding: 12px 15px;
     border-radius: 8px;
-    border: none;
-    outline: none;
+    border: 1px solid rgba(255, 204, 51, 0.25);
+    background: rgba(255, 255, 255, 0.07);
+    color: #fff;
     font-size: 1rem;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
+    outline: none;
+    appearance: auto;
+    font-family: "Inter", sans-serif; /* للحفاظ على الوضوح داخل select */
+  }
+
+  select option {
+    background-color: #1a1d2c;
+    color: #fff;
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: center;
   }
 
   .submit-btn {
     padding: 12px 40px;
-    background-color: #ffcc33;
+    background-color: #f7981d;
     color: #161d33;
     font-weight: 700;
     border: none;
     border-radius: 25px;
     cursor: pointer;
     transition: 0.3s;
+    font-family: "Inter", sans-serif;
   }
 
   .submit-btn:hover {
-    background-color: #ffd84d;
+    background-color: #f7981d;
     box-shadow: 0 0 25px rgba(255, 204, 51, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    .select-wrapper {
+      align-items: center;
+      padding: 50px 20px;
+    }
+
+    form {
+      width: 100%;
+      text-align: center;
+    }
   }
 </style>
 
 <div class="select-wrapper">
-  <h1>Select Your Business Type</h1>
+  <div class="title-box">
+    <h1>Select Your Business Type</h1>
+  </div>
 
   <form method="post">
     {% csrf_token %}
@@ -75,7 +129,9 @@
       {% endfor %}
     </select>
 
-    <button type="submit" class="submit-btn">Continue</button>
+    <div class="button-container">
+      <button type="submit" class="submit-btn">Continue</button>
+    </div>
   </form>
 </div>
 

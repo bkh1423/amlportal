@@ -2,13 +2,17 @@
 {% block title %}Start Scenario{% endblock %}
 {% block content %}
 
+<!-- ✅ استدعاء الخط Abhaya Libre -->
+<link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@600;700;800&display=swap" rel="stylesheet">
+
 <style>
   body {
     background-color: #0b0e17;
     color: #fff;
-    font-family: "Inter", sans-serif;
+    font-family: "Abhaya Libre", serif; /* ✨ تم التغيير هنا */
     text-align: center;
   }
+
   .scenario-container {
     max-width: 850px;
     margin: 120px auto;
@@ -18,27 +22,37 @@
     border: 1px solid rgba(255,204,51,0.15);
     box-shadow: 0 0 30px rgba(0,0,0,0.3);
   }
+
   h1 {
-    color: #ffcc33;
-    font-family: "Abhaya Libre", serif;
+    color: #f7981d;
+    font-weight: 800;
     margin-bottom: 20px;
   }
+
   p {
     color: #bfbfbf;
     line-height: 1.6;
     margin-bottom: 15px;
+    font-weight: 500;
   }
+
+  strong {
+    color: #ffcc33;
+  }
+
   .btn {
     display: inline-block;
     margin-top: 25px;
-    background: #ffcc33;
+    background: #f7981d;
     color: #161d33;
     padding: 12px 28px;
     border-radius: 25px;
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 700;
     transition: 0.3s;
+    font-family: "Inter", sans-serif; /* الزر يبقى بخط واضح */
   }
+
   .btn:hover {
     background: #ffd84d;
   }

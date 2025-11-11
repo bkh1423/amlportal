@@ -42,7 +42,9 @@ class Choice(models.Model):
     is_correct = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.text
+        # 🔸 التعديل المطلوب فقط هنا
+        business_name = self.question.section.business_type.name if self.question.section and self.question.section.business_type else "N/A"
+        return f"{business_name} → {self.text}"
 
 
 # ✅ 5. حفظ إجابات المستخدم
@@ -60,7 +62,7 @@ class UserAnswer(models.Model):
 class ChoiceRule(models.Model):
     choice = models.ForeignKey(Choice, on_delete=models.CASCADE, related_name='rules')
     scenario_result = models.ForeignKey(
-        'results.AssessmentResult',  # 🔹 تم التعديل هنا فقط
+        'results.AssessmentResult',
         on_delete=models.CASCADE,
         related_name='choice_rules'
     )

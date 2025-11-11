@@ -8,7 +8,10 @@ from .models import ChoiceRule
 # 🟢 صفحة البداية (Start Assessment)
 @login_required
 def assessment_start(request):
-    """صفحة البداية فيها الزر Start Assessment"""
+    """
+    صفحة البداية لبدء التقييم.
+    تحتوي على زر "Start Assessment" الذي ينقل المستخدم إلى اختيار نوع النشاط التجاري.
+    """
     return render(request, 'assessment/assessment.html')
 
 
@@ -99,5 +102,16 @@ def calculate_result_view(request):
     priority = {"High": 3, "Medium": 2, "Low": 1}
     final_result = max(matched_results, key=lambda r: priority.get(r.risk_level, 0))
 
+    # ✅ تحديد موقع المؤشر حسب مستوى الخطورة
+    if final_result.risk_level == "High":
+        pointer_pos = "85%"
+    elif final_result.risk_level == "Medium":
+        pointer_pos = "50%"
+    else:
+        pointer_pos = "10%"
+
     # ✅ عرض صفحة النتيجة الجاهزة
-    return render(request, 'assessment/scenario_result.html', {"result": final_result})
+    return render(request, 'assessment/scenario_result.html', {
+        "result": final_result,
+        "pointer_pos": pointer_pos
+    })

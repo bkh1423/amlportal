@@ -2,108 +2,118 @@
 {% block title %}Assessment{% endblock %}
 {% block content %}
 
+<!-- ✅ استدعاء الخط Abhaya Libre -->
+<link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@600;700;800&display=swap" rel="stylesheet">
+
 <style>
   body {
-    position: relative;
+    font-family: "Abhaya Libre", serif; /* ✨ التغيير هنا */
+    background: radial-gradient(circle at top right, #161d33, #161d33 70%);
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
   }
 
-  body::before {
+  .container-result {
+    max-width: 950px;
+    margin: 80px auto;
+    padding: 40px;
+    text-align: left;
+  }
+
+  /* 💠 العنوان */
+  .page-title {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #ffb347;
+    margin-bottom: 40px;
+  }
+
+  /* 💠 البوكس بنفس استايل النتايج */
+  .box {
+    position: relative;
+    background: rgba(40, 60, 110, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 1.2rem;
+    padding: 2rem;
+    margin-bottom: 40px;
+    overflow: hidden;
+    transition: all 0.8s ease;
+  }
+
+  .box::before {
     content: "";
     position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255, 204, 51, 0.07) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 204, 51, 0.07) 1px, transparent 1px);
-    background-size: 70px 70px;
-    z-index: 0;
+    top: -60px;
+    left: -60px;
+    width: 120px;
+    height: 120px;
+    background: rgba(255, 179, 71, 0.05);
+    border-radius: 50%;
+    box-shadow: 0 0 50px rgba(255, 179, 71, 0.2);
+    transition: all 1s ease;
   }
 
-  .assessment-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    min-height: 100vh;
-    background: rgba(22, 29, 51, 0.65);
-    position: relative;
-    z-index: 1;
-    color: #fff;
-    padding: 100px 20px;
+  .box:hover::before {
+    top: -20px;
+    left: -20px;
+    box-shadow: 0 0 80px rgba(255, 179, 71, 0.35);
   }
 
-  h1 {
-    font-size: 2.8rem;
-    font-weight: 800;
-    font-family: "Abhaya Libre", serif;
-    color: #ffcc33;
-    padding: 16px 40px;
-    border: 1px solid rgba(255, 204, 51, 0.2);
-    border-radius: 14px;
-    background: rgba(255, 255, 255, 0.01);
-    box-shadow: 0 0 20px rgba(255, 204, 51, 0.08);
-    margin-bottom: 25px;
+  .box:hover {
+    transform: translateY(-4px);
+    background: rgba(50, 70, 120, 0.35);
   }
 
-  p {
-    color: #d0d0d0;
-    max-width: 700px;
-    line-height: 1.6;
-    margin-bottom: 50px;
-    font-size: 1.1rem;
-  }
-
-  .start-btn {
-    padding: 14px 50px;
-    border-radius: 30px;
-    background-color: #ffcc33;
-    color: #161d33;
+  .box h3 {
+    color: #ffb347;
+    font-size: 1.8rem;
     font-weight: 700;
-    font-size: 1.2rem;
-    border: none;
-    cursor: pointer;
-    transition: 0.3s;
+    margin-bottom: 1rem;
+  }
+
+  .box p {
+    color: #f3f4f6;
+    font-size: 1.3rem;
+    line-height: 1.7;
+  }
+
+  /* 💠 زر البدء */
+  .start-btn {
+    display: inline-block;
+    margin-top: 35px;
+    padding: 12px 35px;
+    background: #ffcc33;
+    color: #000;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    font-family: "Inter", sans-serif; /* الزر بخط واضح */
   }
 
   .start-btn:hover {
-    background-color: #ffd84d;
-    box-shadow: 0 0 25px rgba(255, 204, 51, 0.25);
-  }
-
-  .background-glow {
-    position: absolute;
-    width: 400px;
-    height: 400px;
-    border-radius: 50%;
-    filter: blur(150px);
-    opacity: 0.25;
-    background: radial-gradient(circle, rgba(255,204,51,0.4), transparent 70%);
-    top: 0;
-    right: 0;
-    z-index: 0;
-    animation: pulse 6s infinite ease-in-out;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 0.25; transform: scale(1); }
-    50% { opacity: 0.45; transform: scale(1.1); }
+    background: #ffcc33;
+    transform: scale(1.05);
   }
 </style>
 
-<div class="assessment-wrapper">
-  <div class="background-glow"></div>
+<div class="container-result">
 
-  <h1>Start Your AML Assessment</h1>
-  <p>
-    Begin your Anti-Money Laundering (AML) risk and compliance assessment.<br>
-    This tool will guide you through three key sections:<br>
-    <strong>Business Profile</strong>, <strong>Compliance Stack</strong>, and <strong>Risk Evaluation</strong>.
-  </p>
+  <h1 class="page-title">Start Your AML Assessment</h1>
 
-  <!-- ✅ الزر الصحيح -->
+  <div class="box">
+    <p>
+      Begin your Anti-Money Laundering (AML) risk and compliance assessment.<br>
+      This tool will guide you through three key sections<br>
+    </p>
+  </div>
+
   <form method="get" action="{% url 'assessment_select_type' %}">
     <button type="submit" class="start-btn">Start Assessment</button>
   </form>
+
 </div>
 
 {% endblock %}
