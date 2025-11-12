@@ -7,5 +7,5 @@ urlpatterns = [
     path('select-type/', views.assessment_select_type, name='assessment_select_type'),
     path('business/<int:business_type_id>/section/<int:section_id>/', views.section_questions_view, name='section_questions'),
     path('calculate-result/', views.calculate_result_view, name='calculate_result'),
-
+    path('solutions/', views.solutions_page, name='solutions'),  # ✅ صفحة الحلول
 ]

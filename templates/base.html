@@ -8,7 +8,6 @@
   {% load static %}
   <!-- ✅ Bootstrap Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-
   <link href="https://fonts.googleapis.com/css2?family=Abhaya+Libre:wght@800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
@@ -34,8 +33,6 @@
       z-index: 0;
     }
 
-    .glow { display: none; }
-
     header {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -56,18 +53,10 @@
       gap: 14px;
     }
 
-    .menu-toggle {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
     .site-logo {
       height: 40px;
       object-fit: contain;
       display: block;
-      box-shadow: none !important;
-      filter: none !important;
     }
 
     .menu-toggle {
@@ -105,15 +94,7 @@
       transition: all 0.4s ease;
       z-index: 99;
       overflow-y: auto;
-      overflow-x: hidden;
       padding: 15px 25px 20px;
-      scrollbar-width: thin;
-      scrollbar-color: #f7981d rgba(255,255,255,0.1);
-    }
-
-    .sidebar::-webkit-scrollbar-thumb {
-      background-color: #f7981d;
-      border-radius: 10px;
     }
 
     .sidebar.show { left: 0; }
@@ -137,25 +118,9 @@
       border-radius: 8px;
       font-weight: 500;
       transition: 0.3s;
-      background: none;
-      box-shadow: none;
     }
 
     .sidebar a:hover {
-      background: rgba(247,152,29,0.1);
-      color: #f7981d !important;
-      box-shadow: 0 0 10px rgba(247,152,29,0.2);
-      transform: translateX(5px);
-    }
-
-    .sidebar a.active {
-      background: none;
-      color: #ffffff;
-      font-weight: 600;
-      box-shadow: none;
-    }
-
-    .sidebar a.active:hover {
       background: rgba(247,152,29,0.1);
       color: #f7981d !important;
       box-shadow: 0 0 10px rgba(247,152,29,0.2);
@@ -167,13 +132,10 @@
       border: 1px solid rgba(247,152,29,0.25);
       border-radius: 12px;
       padding: 28px 18px;
+      text-align: center;
       color: #e0e0e0;
       font-size: 0.95rem;
-      text-align: center;
       line-height: 1.7;
-      width: 100%;
-      max-width: 260px;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.45);
       margin-bottom: 35px;
     }
 
@@ -198,16 +160,33 @@
     }
 
     .logout-btn {
-      display: flex; align-items: center; justify-content: center;
-      gap: 8px; background: rgba(255,107,107,0.1); color: #ff6b6b;
-      padding: 12px 0; border-radius: 10px; border: 1px solid rgba(255,107,107,0.2);
-      text-decoration: none; font-weight: 600; transition: 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: rgba(255,107,107,0.1);
+      color: #ff6b6b;
+      padding: 12px 0;
+      border-radius: 10px;
+      border: 1px solid rgba(255,107,107,0.2);
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
     }
 
     .logout-btn:hover { background: rgba(255,107,107,0.25); }
 
     main { position: relative; z-index: 2; padding: 120px 40px 60px; }
-    footer { background: rgba(255,255,255,0.02); color: #e0e0e0; text-align: center; padding: 20px 10px; border-top: 1px solid rgba(247,152,29,0.1); margin-top: 60px; }
+
+    footer {
+      background: rgba(255,255,255,0.02);
+      color: #e0e0e0;
+      text-align: center;
+      padding: 20px 10px;
+      border-top: 1px solid rgba(247,152,29,0.1);
+      margin-top: 60px;
+    }
+
     footer span { color: #f7981d; font-weight: 600; }
   </style>
 </head>
@@ -223,7 +202,6 @@
           <line x1="3" y1="18" x2="21" y2="18"/>
         </svg>
       </button>
-
       <img src="{% static 'images/logo-light2.png' %}" alt="AML Logo" class="site-logo">
     </div>
   </header>
@@ -237,7 +215,7 @@
         <a href="{% url 'assessment_sections' %}"><i class="bi bi-list-check"></i> Assessment Section</a>
         <a href="{% url 'dashboard_home' %}"><i class="bi bi-speedometer2"></i> Dashboard</a>
         <a href="{% url 'assessment_start' %}"><i class="bi bi-journal-text"></i> Assessment</a>
-        <a href="#"><i class="bi bi-lightbulb"></i> Solutions</a>
+        <a href="{% url 'solutions' %}"><i class="bi bi-lightbulb"></i> Solutions</a> <!-- ✅ تمت الإضافة هنا -->
       </div>
     </div>
 

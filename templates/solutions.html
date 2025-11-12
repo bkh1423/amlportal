@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% block title %}Solutions{% endblock %}
+
+{% block content %}
+{% include "header.html" %}
+
+<style>
+  body {
+    font-family: "Inter", sans-serif;
+    background: radial-gradient(circle at top right, #0b0e1a, #0b0e1a 70%);
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* ====== Section Title ====== */
+  .solutions-section {
+    padding: 100px 50px;
+    text-align: center;
+  }
+
+  .solutions-title {
+    color: #f7981d;
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin-bottom: 60px;
+    text-transform: uppercase;
+  }
+
+  /* ====== Grid Layout ====== */
+  .solutions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+    justify-content: center;
+    align-items: stretch;
+  }
+
+  /* ====== Card Base Style ====== */
+  .solution-card {
+    position: relative;
+    height: 420px;
+    border-radius: 15px;
+    overflow: hidden;
+    color: #fff;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    text-align: left;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .solution-card:hover {
+    transform: translateY(-6px);
+  }
+
+  .solution-card .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.65), transparent);
+  }
+
+  .solution-content {
+    position: relative;
+    z-index: 2;
+    padding: 25px;
+  }
+
+  .solution-content h3 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .solution-content p {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #f0f0f0;
+  }
+
+  /* ====== Individual Card Colors ====== */
+  .verify {
+    background-image: url('https://cdn.pixabay.com/photo/2016/11/29/09/08/identity-1861504_1280.jpg');
+    border-top: 5px solid #f7981d;
+  }
+
+  .screening {
+    background-image: url('https://cdn.pixabay.com/photo/2017/08/30/07/51/data-2694249_1280.jpg');
+    border-top: 5px solid #00a8ff;
+  }
+
+  .biometric {
+    background-image: url('https://cdn.pixabay.com/photo/2020/04/09/12/03/facial-recognition-5014299_1280.jpg');
+    border-top: 5px solid #c56cf0;
+  }
+
+  .documentai {
+    background-image: url('https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849821_1280.jpg');
+    border-top: 5px solid #26de81;
+  }
+
+  /* ====== Responsive ====== */
+  @media (max-width: 768px) {
+    .solutions-section {
+      padding: 60px 20px;
+    }
+
+    .solutions-title {
+      font-size: 1.8rem;
+      margin-bottom: 40px;
+    }
+
+    .solution-card {
+      height: 320px;
+    }
+  }
+</style>
+
+<section class="solutions-section">
+  <h2 class="solutions-title">Our Solutions</h2>
+
+  <div class="solutions-grid">
+    <!-- Verify -->
+    <div class="solution-card verify">
+      <div class="overlay"></div>
+      <div class="solution-content">
+        <h3>[Verify]</h3>
+        <p>ID Verification (KYC) supporting 230+ countries</p>
+      </div>
+    </div>
+
+    <!-- Screening -->
+    <div class="solution-card screening">
+      <div class="overlay"></div>
+      <div class="solution-content">
+        <h3>[Screening]</h3>
+        <p>AML/PEP Screening & Case Management Tool</p>
+      </div>
+    </div>
+
+    <!-- Biometric -->
+    <div class="solution-card biometric">
+      <div class="overlay"></div>
+      <div class="solution-content">
+        <h3>[Biometric]</h3>
+        <p>Liveness Detection & Biometric Authentication</p>
+      </div>
+    </div>
+
+    <!-- Document AI -->
+    <div class="solution-card documentai">
+      <div class="overlay"></div>
+      <div class="solution-content">
+        <h3>[Document AI]</h3>
+        <p>Extract, Analyze & Organize Data in Real-Time</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include "footer.html" %}
+{% endblock %}

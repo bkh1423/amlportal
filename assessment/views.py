@@ -1,39 +1,43 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import BusinessType, Section, Question, Choice, UserAnswer
 from django.contrib.auth.decorators import login_required
+from .models import BusinessType, Section, Question, Choice, UserAnswer, ChoiceRule
 from results.models import AssessmentResult
-from .models import ChoiceRule
 
 
-# 🟢 صفحة البداية (Start Assessment)
+# 🟢 صفحة البداية
 @login_required
 def assessment_start(request):
-    """
-    صفحة البداية لبدء التقييم.
-    تحتوي على زر "Start Assessment" الذي ينقل المستخدم إلى اختيار نوع النشاط التجاري.
-    """
+    """صفحة البداية لبدء التقييم"""
     return render(request, 'assessment/assessment.html')
 
 
-# 🟡 صفحة عرض الأقسام + الزر Start في نفس الصفحة
+# 🟡 صفحة عرض الأقسام
 @login_required
 def assessment_sections(request):
     business_types = BusinessType.objects.all()
-
     if request.method == "POST":
         return redirect('assessment_select_type')
-
     return render(request, 'assessment/assessment_sections.html', {'business_types': business_types})
 
 
-# 🟠 صفحة اختيار نوع العمل
+# 🟠 اختيار نوع النشاط التجاري
 @login_required
 def assessment_select_type(request):
     business_types = BusinessType.objects.all()
 
     if request.method == 'POST':
         selected_type = request.POST.get('business_type')
+        if not selected_type:
+            return render(request, 'assessment/select_type.html', {
+                'business_types': business_types,
+                'error': "Please select a business type."
+            })
+
         business_type = get_object_or_404(BusinessType, id=selected_type)
+
+        # ✅ نحفظ نوع النشاط في الـ session
+        request.session['selected_business_type_id'] = business_type.id
+
         first_section = Section.objects.filter(business_type=business_type).order_by('order').first()
         if first_section:
             return redirect('section_questions', business_type_id=business_type.id, section_id=first_section.id)
@@ -67,7 +71,6 @@ def section_questions_view(request, business_type_id, section_id):
         if next_section:
             return redirect('section_questions', business_type_id=business_type.id, section_id=next_section.id)
         else:
-            # ✅ الانتقال لصفحة النتيجة بعد آخر قسم
             return redirect('calculate_result')
 
     return render(request, 'assessment/section_questions.html', {
@@ -79,39 +82,71 @@ def section_questions_view(request, business_type_id, section_id):
 
 
 # ==============================================
-# 🧠 حساب النتيجة التلقائية من إجابات المستخدم
+# 🧠 حساب النتيجة الدقيقة حسب نوع العمل المختار
 # ==============================================
 @login_required
 def calculate_result_view(request):
-    """تحليل إجابات المستخدم وتحديد النتيجة الأنسب"""
+    """تحليل الإجابات وإظهار النتيجة الصحيحة حسب نوع العمل"""
     user = request.user
-    user_answers = UserAnswer.objects.filter(user=user)
+    user_answers = UserAnswer.objects.filter(user=user).select_related('choice', 'question__section')
 
+    # ✅ إذا المستخدم ما جاوب على أي سؤال
+    if not user_answers.exists():
+        return render(request, 'results/no_result.html', {"message": "No answers found. Please complete the assessment first."})
+
+    # ✅ نجيب نوع العمل من الـ session أو من أول إجابة (كحل احتياطي)
+    business_type_id = request.session.get('selected_business_type_id')
+    if business_type_id:
+        business_type = get_object_or_404(BusinessType, id=business_type_id)
+    else:
+        business_type = user_answers.first().question.section.business_type
+
+    # 🔹 جلب النتائج الخاصة بنفس نوع العمل فقط
     matched_results = []
-
     for answer in user_answers:
-        choice = answer.choice
-        rule = ChoiceRule.objects.filter(choice=choice).first()
+        rule = ChoiceRule.objects.filter(
+            choice=answer.choice,
+            scenario_result__business_type=business_type
+        ).first()
         if rule:
             matched_results.append(rule.scenario_result)
 
+    # ✅ لو ما فيه نتيجة مطابقة
     if not matched_results:
-        return render(request, 'results/no_result.html', {"message": "No matching result found."})
+        return render(request, 'results/no_result.html', {"message": f"No result found for {business_type.name}."})
 
-    # ✅ اختيار النتيجة الأعلى حسب مستوى الخطورة
+    # 🧩 اختيار أعلى مستوى خطورة
     priority = {"High": 3, "Medium": 2, "Low": 1}
     final_result = max(matched_results, key=lambda r: priority.get(r.risk_level, 0))
 
-    # ✅ تحديد موقع المؤشر حسب مستوى الخطورة
+    # 🔸 نربط النتيجة بالنوع إذا مو مربوط
+    if not final_result.business_type:
+        final_result.business_type = business_type
+        final_result.save()
+
+    # 🎯 تحديد موقع المؤشر على الشريط
     if final_result.risk_level == "High":
         pointer_pos = "85%"
     elif final_result.risk_level == "Medium":
         pointer_pos = "50%"
     else:
-        pointer_pos = "10%"
+        pointer_pos = "15%"
 
-    # ✅ عرض صفحة النتيجة الجاهزة
+    # 🧹 نحذف session بعد الانتهاء
+    request.session.pop('selected_business_type_id', None)
+
+    # ✅ عرض صفحة النتيجة
     return render(request, 'assessment/scenario_result.html', {
         "result": final_result,
-        "pointer_pos": pointer_pos
+        "pointer_pos": pointer_pos,
+        "business_type": business_type,
     })
+
+
+# ==============================================
+# 💡 صفحة الحلول (Solutions)
+# ==============================================
+@login_required
+def solutions_page(request):
+    """صفحة حلول FACEKI"""
+    return render(request, 'solutions.html')
