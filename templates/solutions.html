@@ -1,166 +1,127 @@
 {% extends "base.html" %}
+{% load static %}
+
 {% block title %}Solutions{% endblock %}
 
 {% block content %}
-{% include "header.html" %}
 
 <style>
   body {
     font-family: "Inter", sans-serif;
-    background: radial-gradient(circle at top right, #0b0e1a, #0b0e1a 70%);
-    color: #ffffff;
+    background: #12172a;
     margin: 0;
     padding: 0;
+    color: #0e0c0c;
   }
 
-  /* ====== Section Title ====== */
-  .solutions-section {
-    padding: 100px 50px;
-    text-align: center;
-  }
-
-  .solutions-title {
-    color: #f7981d;
-    font-size: 2.4rem;
-    font-weight: 800;
-    margin-bottom: 60px;
-    text-transform: uppercase;
-  }
-
-  /* ====== Grid Layout ====== */
-  .solutions-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 25px;
-    justify-content: center;
-    align-items: stretch;
-  }
-
-  /* ====== Card Base Style ====== */
-  .solution-card {
-    position: relative;
-    height: 420px;
-    border-radius: 15px;
-    overflow: hidden;
-    color: #fff;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    text-align: left;
-    cursor: pointer;
-    transition: transform 0.5s ease;
+  /* ====== نفس الكرت اللي عندك تماماً ====== */
+  .card {
+    width: 100%;
+    height: 550px;
+    border-radius: 20px;
     background-size: cover;
     background-position: center;
+    position: relative;
+    padding: 1.8rem;
+    border: 2px solid #66666611;   /* ← الإطار الرمادي */
+    transition: 0.5s ease-out;
+    overflow: hidden;
+     min-width: 3px;
   }
 
-  .solution-card:hover {
-    transform: translateY(-6px);
-  }
-
-  .solution-card .overlay {
+  /* التعتيم فوق الصورة */
+  .card::before {
+    content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.65), transparent);
+    background: linear-gradient(to bottom,
+                rgba(0,0,0,0.15),
+                rgba(0,0,0,0.65));
+    z-index: 1;
   }
 
-  .solution-content {
+  .card-details {
+    color: rgb(36, 33, 33);
+    height: 100%;
+    display: grid;
+    place-content: center;
+    text-align: center;
+    gap: .5em;
     position: relative;
-    z-index: 2;
-    padding: 25px;
+    z-index: 5;
+    transform: translateY(-80px);
   }
 
-  .solution-content h3 {
-    font-size: 1.6rem;
-    margin-bottom: 10px;
-    font-weight: 700;
-    color: #fff;
+  .text-body {
+    font-size: 1.1em;
+    line-height: 1.55;
+    color: #6b6b6b;
   }
 
-  .solution-content p {
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #f0f0f0;
+  /* Hover نفس اللي عندك */
+  .card:hover {
+    border-color: #f7981d;
+    box-shadow: 0 4px 18px rgba(241, 185, 107, 0.25);
+    transform: translateY(-10px);
   }
 
-  /* ====== Individual Card Colors ====== */
-  .verify {
-    background-image: url('https://cdn.pixabay.com/photo/2016/11/29/09/08/identity-1861504_1280.jpg');
-    border-top: 5px solid #f7981d;
-  }
-
-  .screening {
-    background-image: url('https://cdn.pixabay.com/photo/2017/08/30/07/51/data-2694249_1280.jpg');
-    border-top: 5px solid #00a8ff;
-  }
-
-  .biometric {
-    background-image: url('https://cdn.pixabay.com/photo/2020/04/09/12/03/facial-recognition-5014299_1280.jpg');
-    border-top: 5px solid #c56cf0;
-  }
-
-  .documentai {
-    background-image: url('https://cdn.pixabay.com/photo/2015/07/17/22/43/student-849821_1280.jpg');
-    border-top: 5px solid #26de81;
-  }
-
-  /* ====== Responsive ====== */
-  @media (max-width: 768px) {
-    .solutions-section {
-      padding: 60px 20px;
-    }
-
-    .solutions-title {
-      font-size: 1.8rem;
-      margin-bottom: 40px;
-    }
-
-    .solution-card {
-      height: 320px;
-    }
+  /* GRID للكروت */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    padding: 50px;
   }
 </style>
 
-<section class="solutions-section">
-  <h2 class="solutions-title">Our Solutions</h2>
 
-  <div class="solutions-grid">
+<section class="solutions-section">
+
+  <!-- ⭐ عنوان Solutions بنفس ستايل AML ⭐ -->
+  <h2 style="
+      font-family: 'Abhaya Libre', serif;
+      font-weight: 800;
+      font-size: 4rem;
+      color: #f7981d;
+      text-align: center;
+      margin-top: 30px;
+      margin-bottom: 40px;
+  ">
+    Solutions
+  </h2>
+
+  <div class="cards-grid">
+
     <!-- Verify -->
-    <div class="solution-card verify">
-      <div class="overlay"></div>
-      <div class="solution-content">
-        <h3>[Verify]</h3>
-        <p>ID Verification (KYC) supporting 230+ countries</p>
+    <div class="card" style="background-image: url('{% static "images/solutions/verify.jpg.png" %}');">
+      <div class="card-details">
+        <p class="text-body">ID verification (KYC)<br>supporting 230+ countries</p>
       </div>
     </div>
 
     <!-- Screening -->
-    <div class="solution-card screening">
-      <div class="overlay"></div>
-      <div class="solution-content">
-        <h3>[Screening]</h3>
-        <p>AML/PEP Screening & Case Management Tool</p>
+    <div class="card" style="background-image: url('{% static "images/solutions/screening.jpg.png" %}');">
+      <div class="card-details">
+        <p class="text-body">AML/PEP Screening<br>& Case Management Tool</p>
       </div>
     </div>
 
     <!-- Biometric -->
-    <div class="solution-card biometric">
-      <div class="overlay"></div>
-      <div class="solution-content">
-        <h3>[Biometric]</h3>
-        <p>Liveness Detection & Biometric Authentication</p>
+    <div class="card" style="background-image: url('{% static "images/solutions/biometric.jpg.png" %}');">
+      <div class="card-details">
+        <p class="text-body">Liveness Detection<br>& Biometric Authentication</p>
       </div>
     </div>
 
     <!-- Document AI -->
-    <div class="solution-card documentai">
-      <div class="overlay"></div>
-      <div class="solution-content">
-        <h3>[Document AI]</h3>
-        <p>Extract, Analyze & Organize Data in Real-Time</p>
+    <div class="card" style="background-image: url('{% static "images/solutions/documentai.jpg.png" %}');">
+      <div class="card-details">
+        <p class="text-body">Extract, Analyze<br>& Organize Data in Real-Time</p>
       </div>
     </div>
+
   </div>
+
 </section>
 
-{% include "footer.html" %}
 {% endblock %}
